@@ -1,6 +1,14 @@
 PERSONAL NOTES:
 install material ui: npm install @mui/material @emotion/react @emotion/styled
 
+New changes:
+npm i 
+//to install everything
+
+npm install firebase
+//in case found some unknown eror
+
+hope the code should work
 
 
 

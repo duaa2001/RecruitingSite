@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useUser, useClerk } from '@clerk/nextjs';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
+
 export default function Profile() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -79,9 +80,11 @@ export default function Profile() {
 
       <Container maxWidth="md">
         <Paper elevation={3} sx={{ mt: 4, p: 3 }}>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" 
+          gutterBottom>
             My Profile
           </Typography>
+          <Typography variant="h5">{profile.name || 'No Name available'}</Typography>
           {profile ? (
             <>
               <Box mb={2}>

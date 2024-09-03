@@ -8,6 +8,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import { useRouter } from 'next/navigation';
 import { useUser, useClerk } from '@clerk/nextjs';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { db } from '@/firebase'; // Adjust the path accordingly
 
 export default function Dashboard() {
   const [users, setUsers] = useState([]);
@@ -72,6 +73,7 @@ export default function Dashboard() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             TechMarket
           </Typography>
+          <Button color="inherit" onClick={() => router.push('/create_profile')}>Create Profile</Button>
           <Button color="inherit" onClick={() => router.push('/profile')}>My Profile</Button>
           <Button color="inherit" onClick={handleSignOut}>Sign Out</Button>
         </Toolbar>
