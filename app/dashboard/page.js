@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { Typography, Box, Container, Grid, Card, CardContent, Avatar, Link, Chip, AppBar, Toolbar, Button, CircularProgress } from '@mui/material';
+import { TextField, Typography, Box, Container, Grid, Card, CardContent, Avatar, Link, Chip, AppBar, Toolbar, Button, CircularProgress } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -13,8 +13,10 @@ export default function Dashboard() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user, isLoaded, isSignedIn } = useUser();
+  const [searchTerm, setSearchTerm] = useState('');
   const { signOut } = useClerk();
   const router = useRouter();
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -54,6 +56,15 @@ export default function Dashboard() {
     return null;
   }
 
+  const handleSearch = () => {
+    const filteredUsers = users.filter(user =>
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+    setUsers(filteredUsers);
+  };
+  
+
   return (
     <Box>
       <AppBar position="static">
@@ -70,6 +81,23 @@ export default function Dashboard() {
         <Typography variant="h4" gutterBottom>
           Tech Professionals
         </Typography>
+
+         {/* Search Input */}
+  <Box display="flex" mb={2}>
+    <TextField
+      label="Search profiles by name or skill"
+      variant="outlined"
+      size="small"
+      fullWidth
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      sx={{ mr: 2 }}
+    />
+    <Button variant="contained" color="primary" onClick={handleSearch}>
+      Search
+    </Button>
+  </Box>
+
         {loading ? (
           <CircularProgress />
         ) : (
