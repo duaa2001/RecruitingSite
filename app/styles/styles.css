@@ -1,22 +1,47 @@
+:root {
+  --primary-color: #10a37f;
+  --primary-color-dark: #0e7c61;
+  --background-color: #f7f7f7;
+  --text-color: #353740;
+  --secondary-text-color: #6e6e80;
+}
+
 body {
   font-family: 'Source Code Pro', monospace;
   margin: 0;
   padding: 0;
-  background-color: #f7f7f7;
-  color: #353740;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 64px 0; /* Account for fixed navbar */
+  box-sizing: border-box;
 }
 
 .hero {
-  background-color: #f0f0f0;
-  padding: 100px 0;
+  background-color: var(--background-color);
   text-align: center;
+}
+
+.about, .features {
+  background-color: white;
 }
 
 .title {
   font-size: 6rem;
-  font-weight: 300;
+  font-weight: 200;
   margin-bottom: 1rem;
-  background: linear-gradient(to right, #10a37f, #0e7c61);
+  background: linear-gradient(to right, var(--primary-color), var(--primary-color-dark));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -24,12 +49,12 @@ body {
 
 .subtitle {
   font-size: 1.25rem;
-  color: #6e6e80;
+  color: var(--secondary-text-color);
   margin-bottom: 2rem;
 }
 
 .button {
-  background-color: #10a37f !important;
+  background-color: var(--primary-color) !important;
   color: white !important;
   font-size: 1rem !important;
   padding: 0.75rem 1.5rem !important;
@@ -39,16 +64,58 @@ body {
 }
 
 .button:hover {
-  background-color: #0e7c61 !important;
-}
-
-.section {
-  padding: 80px 0;
+  background-color: var(--primary-color-dark) !important;
 }
 
 .section-title {
+  font-weight: 300;
   font-size: 2.5rem;
-  font-weight: 700;
   margin-bottom: 2rem;
   text-align: center;
+  color: var(--primary-color);
+}
+
+/* MUI overrides */
+.MuiAppBar-root {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(10px);
+  color: var(--text-color) !important;
+}
+
+.MuiButton-root {
+  font-family: 'Source Code Pro', monospace !important;
+}
+
+.MuiTypography-root {
+  font-family: 'Source Code Pro', monospace !important;
+}
+
+.MuiCard-root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease-in-out;
+}
+
+.MuiCard-root:hover {
+  transform: translateY(-5px);
+}
+
+.MuiCardContent-root {
+  flex-grow: 1;
+}
+
+.MuiAvatar-root {
+  background-color: var(--primary-color) !important;
+}
+
+.footer {
+  background-color: var(--background-color);
+  padding: 24px 0;
+  text-align: center;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }
