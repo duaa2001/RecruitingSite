@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import { AppBar, Toolbar, Typography, Button, Box, Card, CardContent, IconButton, Grid, Container, Avatar, Link } from "@mui/material";
 import WorkIcon from '@mui/icons-material/Work';
@@ -9,14 +11,34 @@ import SearchIcon from '@mui/icons-material/Search';
 import MessageIcon from '@mui/icons-material/Message';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import LogoutIcon from '@mui/icons-material/Logout';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import "../app/styles/styles.css";
 
+import { useRouter } from 'next/navigation';
+import { useUser, useClerk } from '@clerk/nextjs';
+
 export default function Home() {
+  const { isSignedIn } = useUser();
+  const { signOut } = useClerk();
+  const router = useRouter();
+
+  const handleGetStarted = () => {
+    if (isSignedIn) {
+      router.push('/dashboard');
+    } else {
+      router.push('/signin');
+    }
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push('/');
+  };
+
   return (
     <Box className="container">
-      {/* Navbar */}
-      <AppBar position="fixed" color="transparent" elevation={0}>
+      <AppBar position="static" color="transparent" elevation={0}>
         <Container>
           <Toolbar>
             <Link href="/" underline="none" color="inherit">
@@ -26,8 +48,16 @@ export default function Home() {
               </Typography>
             </Link>
             <Box sx={{ flexGrow: 1 }} />
-            <Button color="inherit" href="/signin">Sign In</Button>
-            <Button color="inherit" href="/signup">Sign Up</Button>
+            {isSignedIn ? (
+              <IconButton color="inherit" onClick={handleSignOut}>
+                <LogoutIcon />
+              </IconButton>
+            ) : (
+              <>
+                <Button color="inherit" href="/signin">Sign In</Button>
+                <Button color="inherit" href="/signup">Sign Up</Button>
+              </>
+            )}
           </Toolbar>
         </Container>
       </AppBar>
@@ -41,7 +71,7 @@ export default function Home() {
           <Typography variant="body1" className="subtitle">
             Make your Profile. Connect with others. Explore.
           </Typography>
-          <Button variant="contained" className="button">
+          <Button variant="contained" className="button" onClick={handleGetStarted}>
             Get Started
           </Button>
         </Container>
