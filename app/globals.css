@@ -1,5 +1,12 @@
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+:root {
+  --font-mono: 'Source Code Pro', monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+body {
+  font-family: var(--font-mono), var(--font-sans);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-mono), var(--font-sans);
 }

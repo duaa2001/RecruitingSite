@@ -1,5 +1,5 @@
 body {
-  font-family: 'Colfax', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Source Code Pro', monospace;
   margin: 0;
   padding: 0;
   background-color: #f7f7f7;
@@ -13,8 +13,8 @@ body {
 }
 
 .title {
-  font-size: 3rem;
-  font-weight: 700;
+  font-size: 6rem;
+  font-weight: 300;
   margin-bottom: 1rem;
   background: linear-gradient(to right, #10a37f, #0e7c61);
   -webkit-background-clip: text;
