@@ -68,10 +68,14 @@ export default function Dashboard() {
 
   return (
     <Box>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ backgroundColor: '#10a37f' }}>
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            TechMarket
+        <Typography variant="h2" component="div" sx={{ flexGrow: 1 }}>
+            <Link href="/" passHref>
+              <Button color="inherit" sx={{ textTransform: 'none', color: 'white', fontSize: '2rem'}}>
+                TechMarket
+              </Button>
+            </Link>
           </Typography>
           <Button color="inherit" onClick={() => router.push('/create_profile')}>Create Profile</Button>
           <Button color="inherit" onClick={() => router.push('/profile')}>My Profile</Button>
@@ -85,7 +89,7 @@ export default function Dashboard() {
         </Typography>
 
          {/* Search Input */}
-  <Box display="flex" mb={2}>
+  <Box display="flex" mb={2} sx={{ backgroundColor: 'black' }}>
     <TextField
       label="Search profiles by name or skill"
       variant="outlined"
@@ -93,9 +97,9 @@ export default function Dashboard() {
       fullWidth
       value={searchTerm}
       onChange={(e) => setSearchTerm(e.target.value)}
-      sx={{ mr: 2 }}
+      sx={{ mr: 2, backgroundColor: 'white', input: { color: 'black' }, label: { color: 'black' } }}
     />
-    <Button variant="contained" color="primary" onClick={handleSearch}>
+    <Button variant="contained" sx={{ backgroundColor: 'black', color: 'white' }} onClick={handleSearch}>
       Search
     </Button>
   </Box>
