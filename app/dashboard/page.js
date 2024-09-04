@@ -17,6 +17,7 @@ import HeadlineTicker from '@/components/HeadlineTicker';
 
 export default function Dashboard() {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState(users);
   const [loading, setLoading] = useState(true);
   const { user, isLoaded, isSignedIn } = useUser();
   const [searchTerm, setSearchTerm] = useState('');
@@ -26,6 +27,7 @@ export default function Dashboard() {
   const { signOut } = useClerk();
   const [headlines, setHeadlines] = useState([]);
   const router = useRouter();
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -49,7 +51,6 @@ export default function Dashboard() {
       }
     };
 
-
     const fetchHeadlines = async () => {
       const fetchedHeadlines = [
         "New jobs in tech are up by 20% this month!",
@@ -60,13 +61,16 @@ export default function Dashboard() {
       setHeadlines(fetchedHeadlines);
     };
 
-
     if (isSignedIn) {
       fetchUsers();
       checkUserProfile();
-      fetchHeadlines(); 
+      fetchHeadlines();
     }
   }, [isSignedIn, user]);
+
+  useEffect(() => {
+    setFilteredUsers(users);
+  }, [users]);
 
   const handleSignOut = async () => {
     try {
@@ -86,7 +90,7 @@ export default function Dashboard() {
     setOpenDialog(false);
   };
 
-  if (!isLoaded) {
+  if (loading) {
     return <CircularProgress />;
   }
 
@@ -96,11 +100,12 @@ export default function Dashboard() {
   }
 
   const handleSearch = () => {
-    const filteredUsers = users.filter(user =>
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-    setUsers(filteredUsers);
+    const filtered = users.filter(user => {
+      const nameMatch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
+      const skillsMatch = Array.isArray(user.skills) && user.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()));
+      return nameMatch || skillsMatch;
+    });
+    setFilteredUsers(filtered);
   };
 
   return (
@@ -164,9 +169,9 @@ export default function Dashboard() {
 
         {loading ? (
           <CircularProgress />
-        ) : users.length > 0 ? (
+        ) : filteredUsers.length > 0 ? (
           <Grid container spacing={3}>
-            {users.map((user) => (
+            {filteredUsers.map((user) => (
               <Grid item xs={12} sm={6} md={4} key={user.id}>
                 <Card onClick={() => handleOpenProfile(user)} style={{ cursor: 'pointer' }}>
                   <CardContent>
