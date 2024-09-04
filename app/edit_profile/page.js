@@ -6,7 +6,7 @@ import WorkIcon from '@mui/icons-material/Work';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 import { doc, getDoc, updateDoc, setDoc, deleteDoc } from 'firebase/firestore';
-import { db } from '@/firebase'; // Adjust the path accordingly
+import { db } from '../../firebase'; // Adjust the path accordingly
 
 export default function EditProfilePage() {
   const [profile, setProfile] = useState(null);

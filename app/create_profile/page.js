@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 import { doc, setDoc } from 'firebase/firestore';
 import WorkIcon from '@mui/icons-material/Work';
-import { db } from '@/firebase';
+import { db } from '../../firebase';
 import "../styles/styles.css";
 
 export default function CreateProfilePage() {
