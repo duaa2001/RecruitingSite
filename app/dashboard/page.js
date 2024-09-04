@@ -78,7 +78,7 @@ export default function Dashboard() {
 
   return (
     <Box>
-      <AppBar position="static" color="transparent" elevation={0}>
+      <AppBar position="static" color="transparent" elevation={3}>
         <Container>
           <Toolbar>
             <Link href="/" underline="none" color="inherit">

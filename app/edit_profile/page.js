@@ -147,13 +147,25 @@ export default function EditProfilePage() {
 
   return (
     <Box>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            TechMarket
-          </Typography>
-          <Button color="inherit" onClick={() => router.push('/dashboard')}>Dashboard</Button>
-        </Toolbar>
+      <AppBar position="static" color="transparent" elevation={4}>
+        <Container>
+          <Toolbar>
+            <Link href="/" underline="none" color="inherit">
+              <Typography variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center' }}>
+                <WorkIcon sx={{ mr: 1 }} />
+                TechMarket
+              </Typography>
+            </Link>
+            <Box sx={{ flexGrow: 1 }} />
+            <Button 
+              color="inherit" 
+              onClick={() => router.push('/dashboard')}
+              sx={{ mr: 2 }}
+            >
+              Dashboard
+            </Button>
+          </Toolbar>
+        </Container>
       </AppBar>
 
       <Container maxWidth="md">

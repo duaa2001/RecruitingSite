@@ -1,12 +1,14 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Typography, Box, Container, TextField, Button, Paper, Chip, CircularProgress, AppBar, Toolbar } from '@mui/material';
+import { Typography, Box, Container, TextField, IconButton, Button, Paper, Chip, Link, CircularProgress, AppBar, Toolbar } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import WorkIcon from '@mui/icons-material/Work';
 import { db } from '@/firebase';
+import "../styles/styles.css";
 
 export default function CreateProfilePage() {
   const [name, setName] = useState('');
@@ -95,13 +97,25 @@ export default function CreateProfilePage() {
 
   return (
     <Box>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            TechMarket
-          </Typography>
-          <Button color="inherit" onClick={() => router.push('/dashboard')}>Dashboard</Button>
-        </Toolbar>
+      <AppBar position="static" color="transparent" elevation={3}>
+        <Container>
+          <Toolbar>
+            <Link href="/" underline="none" color="inherit">
+              <Typography variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center' }}>
+                <WorkIcon sx={{ mr: 1 }} />
+                TechMarket
+              </Typography>
+            </Link>
+            <Box sx={{ flexGrow: 1 }} />
+            <Button 
+              color="inherit" 
+              onClick={() => router.push('/dashboard')}
+              sx={{ mr: 2 }}
+            >
+              Dashboard
+            </Button>
+          </Toolbar>
+        </Container>
       </AppBar>
 
       <Container maxWidth="md">
