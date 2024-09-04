@@ -13,6 +13,7 @@ import { getFirestore, collection, getDocs, doc, getDoc } from 'firebase/firesto
 import { db } from '../../firebase';
 import ProfileDialog from '@/components/ProfileDialog';
 import "../styles/styles.css";
+import { Height } from '@mui/icons-material';
 
 export default function Dashboard() {
   const [users, setUsers] = useState([]);
@@ -140,7 +141,7 @@ export default function Dashboard() {
             onChange={(e) => setSearchTerm(e.target.value)}
             sx={{ mr: 2 }}
           />
-          <Button variant="contained" onClick={handleSearch}>
+          <Button variant="contained" onClick={handleSearch} className='button' sx={{height:'40px'}}>
             Search
           </Button>
         </Box>
