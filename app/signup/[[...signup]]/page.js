@@ -1,11 +1,19 @@
 "use client";
-import { Toolbar, Box, Typography, Button, Container } from "@mui/material";
+import {
+  Toolbar,
+  Box,
+  Typography,
+  Button,
+  Container,
+  CssBaseline,
+} from "@mui/material";
 import { SignUp } from "@clerk/nextjs";
 import Image from "next/image";
 
 export default function SignUpPage() {
   return (
     <>
+      <CssBaseline />
       <Box
         display="flex"
         flexDirection="column"

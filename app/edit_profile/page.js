@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 
 'use client'
 
@@ -10,24 +11,55 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 import { doc, getDoc, updateDoc, setDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../firebase'; // Adjust the path accordingly
+=======
+"use client";
+>>>>>>> Stashed changes
 
+import React, { useState, useEffect } from "react";
+import {
+  Typography,
+  Box,
+  Container,
+  TextField,
+  Button,
+  Paper,
+  Chip,
+  CircularProgress,
+  AppBar,
+  Toolbar,
+  Alert,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
+import { doc, getDoc, updateDoc, setDoc, deleteDoc } from "firebase/firestore";
+import { db } from "@/firebase"; // Adjust the path accordingly
+import { Link } from "@mui/icons-material";
 export default function EditProfilePage() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [name, setName] = useState('');
-  const [bio, setBio] = useState('');
-  const [github, setGithub] = useState('');
-  const [linkedin, setLinkedin] = useState('');
-  const [resume, setResume] = useState('');
+  const [successMessage, setSuccessMessage] = useState("");
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
+  const [github, setGithub] = useState("");
+  const [linkedin, setLinkedin] = useState("");
+  const [resume, setResume] = useState("");
   const [skills, setSkills] = useState([]);
+<<<<<<< Updated upstream
   const [newSkill, setNewSkill] = useState('');
   const [education, setEducation] = useState([]);
   const [workExperience, setWorkExperience] = useState([]);
   const [projects, setProjects] = useState([]);
+=======
+  const [newSkill, setNewSkill] = useState("");
+>>>>>>> Stashed changes
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const { isLoaded, userId } = useAuth();
   const router = useRouter();
@@ -36,31 +68,31 @@ export default function EditProfilePage() {
     const fetchProfile = async () => {
       if (isLoaded && userId) {
         try {
-          const userDoc = doc(db, 'users', userId);
+          const userDoc = doc(db, "users", userId);
           const userSnapshot = await getDoc(userDoc);
           if (userSnapshot.exists()) {
             const userData = userSnapshot.data();
             setProfile(userData);
-            setName(userData.name || '');
-            setBio(userData.bio || '');
-            setGithub(userData.github || '');
-            setLinkedin(userData.linkedin || '');
-            setResume(userData.resume || '');
+            setName(userData.name || "");
+            setBio(userData.bio || "");
+            setGithub(userData.github || "");
+            setLinkedin(userData.linkedin || "");
+            setResume(userData.resume || "");
             setSkills(userData.skills || []);
             setEducation(userData.education || []);
             setWorkExperience(userData.workExperience || []);
             setProjects(userData.projects || []);
           } else {
-            setError('No profile found. Please create your profile.');
+            setError("No profile found. Please create your profile.");
           }
         } catch (err) {
-          console.error('Error fetching profile:', err);
-          setError('Failed to load profile');
+          console.error("Error fetching profile:", err);
+          setError("Failed to load profile");
         } finally {
           setLoading(false);
         }
       } else if (isLoaded && !userId) {
-        router.push('/sign-in');
+        router.push("/sign-in");
       }
     };
 
@@ -70,16 +102,16 @@ export default function EditProfilePage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!userId) {
-      setError('User not authenticated');
+      setError("User not authenticated");
       return;
     }
 
     setUpdating(true);
     setError(null);
-    setSuccessMessage('');
+    setSuccessMessage("");
 
     try {
-      const userDoc = doc(db, 'users', userId);
+      const userDoc = doc(db, "users", userId);
       const profileData = {
         name,
         bio,
@@ -98,11 +130,11 @@ export default function EditProfilePage() {
         await setDoc(userDoc, profileData);
       }
 
-      setSuccessMessage('Profile updated successfully!');
-      setProfile(prev => ({ ...prev, ...profileData }));
+      setSuccessMessage("Profile updated successfully!");
+      setProfile((prev) => ({ ...prev, ...profileData }));
     } catch (err) {
-      console.error('Error updating profile:', err);
-      setError('Failed to update profile: ' + err.message);
+      console.error("Error updating profile:", err);
+      setError("Failed to update profile: " + err.message);
     } finally {
       setUpdating(false);
     }
@@ -110,34 +142,34 @@ export default function EditProfilePage() {
 
   const handleDeleteProfile = async () => {
     if (!userId) {
-      setError('User not authenticated');
+      setError("User not authenticated");
       return;
     }
 
     setDeleting(true);
     setError(null);
-    setSuccessMessage('');
+    setSuccessMessage("");
 
     try {
-      const userDoc = doc(db, 'users', userId);
+      const userDoc = doc(db, "users", userId);
       await deleteDoc(userDoc);
-      setSuccessMessage('Profile deleted successfully!');
+      setSuccessMessage("Profile deleted successfully!");
       setProfile(null);
       // Reset all form fields
-      setName('');
-      setBio('');
-      setGithub('');
-      setLinkedin('');
-      setResume('');
+      setName("");
+      setBio("");
+      setGithub("");
+      setLinkedin("");
+      setResume("");
       setSkills([]);
       setEducation([]);
       setWorkExperience([]);
       setProjects([]);
       // Optionally, redirect to dashboard or home page
-      router.push('/dashboard');
+      router.push("/dashboard");
     } catch (err) {
-      console.error('Error deleting profile:', err);
-      setError('Failed to delete profile: ' + err.message);
+      console.error("Error deleting profile:", err);
+      setError("Failed to delete profile: " + err.message);
     } finally {
       setDeleting(false);
       setOpenDeleteDialog(false);
@@ -147,14 +179,15 @@ export default function EditProfilePage() {
   const handleSkillAdd = () => {
     if (newSkill.trim() && !skills.includes(newSkill.trim())) {
       setSkills([...skills, newSkill.trim()]);
-      setNewSkill('');
+      setNewSkill("");
     }
   };
 
   const handleSkillDelete = (skillToDelete) => {
-    setSkills(skills.filter(skill => skill !== skillToDelete));
+    setSkills(skills.filter((skill) => skill !== skillToDelete));
   };
 
+<<<<<<< Updated upstream
   const handleEducationChange = (index, field, value) => {
     const newEducation = [...education];
     newEducation[index] = { ...newEducation[index], [field]: value };
@@ -198,6 +231,10 @@ export default function EditProfilePage() {
   };
 
   const isFormValid = name && bio && github && linkedin && resume && skills.length > 0;
+=======
+  const isFormValid =
+    name && bio && github && linkedin && resume && skills.length > 0;
+>>>>>>> Stashed changes
 
   if (!isLoaded || loading) {
     return <CircularProgress />;
@@ -209,15 +246,18 @@ export default function EditProfilePage() {
         <Container>
           <Toolbar>
             <Link href="/" underline="none" color="inherit">
-              <Typography variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center' }}>
-                <WorkIcon sx={{ mr: 1 }} />
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ display: "flex", alignItems: "center" }}
+              >
                 TechMarket
               </Typography>
             </Link>
             <Box sx={{ flexGrow: 1 }} />
-            <Button 
-              color="inherit" 
-              onClick={() => router.push('/dashboard')}
+            <Button
+              color="inherit"
+              onClick={() => router.push("/dashboard")}
               sx={{ mr: 2 }}
             >
               Dashboard
@@ -229,7 +269,7 @@ export default function EditProfilePage() {
       <Container maxWidth="md">
         <Paper elevation={3} sx={{ mt: 4, p: 3 }}>
           <Typography variant="h4" gutterBottom>
-            {profile ? 'My Profile' : 'Create Profile'}
+            {profile ? "My Profile" : "Create Profile"}
           </Typography>
           {successMessage && (
             <Alert severity="success" sx={{ mb: 2 }}>
@@ -294,12 +334,14 @@ export default function EditProfilePage() {
                   sx={{ mr: 1, mb: 1 }}
                 />
               ))}
-              <Box sx={{ display: 'flex', mt: 1 }}>
+              <Box sx={{ display: "flex", mt: 1 }}>
                 <TextField
                   label="Add Skill"
                   value={newSkill}
                   onChange={(e) => setNewSkill(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleSkillAdd())}
+                  onKeyPress={(e) =>
+                    e.key === "Enter" && (e.preventDefault(), handleSkillAdd())
+                  }
                   sx={{ mr: 1 }}
                 />
                 <Button variant="outlined" onClick={handleSkillAdd}>
@@ -307,6 +349,7 @@ export default function EditProfilePage() {
                 </Button>
               </Box>
             </Box>
+<<<<<<< Updated upstream
 
             <Box sx={{ mt: 2, mb: 2 }}>
               <Typography variant="h6">Education</Typography>
@@ -436,19 +479,31 @@ export default function EditProfilePage() {
               <Button 
                 type="submit" 
                 variant="contained" 
+=======
+            <Box
+              sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}
+            >
+              <Button
+                type="submit"
+                variant="contained"
+>>>>>>> Stashed changes
                 color="primary"
                 disabled={updating || !isFormValid}
               >
-                {updating ? 'Updating...' : (profile ? 'Update Profile' : 'Create Profile')}
+                {updating
+                  ? "Updating..."
+                  : profile
+                  ? "Update Profile"
+                  : "Create Profile"}
               </Button>
               {profile && (
-                <Button 
-                  variant="contained" 
+                <Button
+                  variant="contained"
                   color="error"
                   onClick={() => setOpenDeleteDialog(true)}
                   disabled={deleting}
                 >
-                  {deleting ? 'Deleting...' : 'Delete Profile'}
+                  {deleting ? "Deleting..." : "Delete Profile"}
                 </Button>
               )}
             </Box>
@@ -467,7 +522,8 @@ export default function EditProfilePage() {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            This action cannot be undone. All your profile data will be permanently deleted.
+            This action cannot be undone. All your profile data will be
+            permanently deleted.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
