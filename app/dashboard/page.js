@@ -11,9 +11,9 @@ import { useRouter } from 'next/navigation';
 import { useUser, useClerk } from '@clerk/nextjs';
 import { getFirestore, collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
-import ProfileDialog from '@/components/ProfileDialog';
+import ProfileDialog from '../components/ProfileDialog';;
 import "../styles/styles.css";
-import HeadlineTicker from '@/components/HeadlineTicker';
+import HeadlineTicker from '../components/ProfileDialog';
 
 export default function Dashboard() {
   const [users, setUsers] = useState([]);
