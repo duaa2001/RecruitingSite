@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useUser, useClerk } from '@clerk/nextjs';
 import { getFirestore, collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
+import ProfileDialog from '@/components/ProfileDialog';
 import "../styles/styles.css";
 
 export default function Dashboard() {
@@ -19,6 +20,8 @@ export default function Dashboard() {
   const { user, isLoaded, isSignedIn } = useUser();
   const [searchTerm, setSearchTerm] = useState('');
   const [hasProfile, setHasProfile] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
   const { signOut } = useClerk();
   const router = useRouter();
 
@@ -57,6 +60,15 @@ export default function Dashboard() {
     } catch (error) {
       console.error("Error signing out:", error);
     }
+  };
+
+  const handleOpenProfile = (profile) => {
+    setSelectedProfile(profile);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   if (!isLoaded) {
@@ -139,30 +151,23 @@ export default function Dashboard() {
           <Grid container spacing={3}>
             {users.map((user) => (
               <Grid item xs={12} sm={6} md={4} key={user.id}>
-                <Link href={`/profile/${user.id}`} passHref>
-                <Card>
+                <Card onClick={() => handleOpenProfile(user)} style={{ cursor: 'pointer' }}>
                   <CardContent>
                     <Box display="flex" alignItems="center" mb={2}>
                       <Avatar src={user.photoURL} alt={user.name} sx={{ mr: 2 }} />
                       <Typography variant="h6">{user.name}</Typography>
                     </Box>
                     <Box mb={2}>
-                      <Link href={user.github} target="_blank" rel="noopener noreferrer">
-                        <GitHubIcon sx={{ mr: 1 }} />
-                        GitHub
-                      </Link>
+                      <GitHubIcon sx={{ mr: 1 }} />
+                      GitHub
                     </Box>
                     <Box mb={2}>
-                      <Link href={user.linkedin} target="_blank" rel="noopener noreferrer">
-                        <LinkedInIcon sx={{ mr: 1 }} />
-                        LinkedIn
-                      </Link>
+                      <LinkedInIcon sx={{ mr: 1 }} />
+                      LinkedIn
                     </Box>
                     <Box mb={2}>
-                      <Link href={user.resume} target="_blank" rel="noopener noreferrer">
-                        <DescriptionIcon sx={{ mr: 1 }} />
-                        Resume
-                      </Link>
+                      <DescriptionIcon sx={{ mr: 1 }} />
+                      Resume
                     </Box>
                     <Box>
                       {user.skills && user.skills.slice(0, 8).map((skill, index) => (
@@ -171,7 +176,6 @@ export default function Dashboard() {
                     </Box>
                   </CardContent>
                 </Card>
-                </Link>
               </Grid>
             ))}
           </Grid>
@@ -179,6 +183,12 @@ export default function Dashboard() {
           <Typography>No users found.</Typography>
         )}
       </Container>
+
+      <ProfileDialog 
+        open={openDialog} 
+        onClose={handleCloseDialog} 
+        profile={selectedProfile} 
+      />
     </Box>
   );
 }
