@@ -13,7 +13,7 @@ import { getFirestore, collection, getDocs, doc, getDoc } from 'firebase/firesto
 import { db } from '../../firebase';
 import ProfileDialog from '@/components/ProfileDialog';
 import "../styles/styles.css";
-import { Height } from '@mui/icons-material';
+import HeadlineTicker from '@/components/HeadlineTicker';
 
 export default function Dashboard() {
   const [users, setUsers] = useState([]);
@@ -24,6 +24,7 @@ export default function Dashboard() {
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const { signOut } = useClerk();
+  const [headlines, setHeadlines] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -48,9 +49,22 @@ export default function Dashboard() {
       }
     };
 
+
+    const fetchHeadlines = async () => {
+      const fetchedHeadlines = [
+        "New jobs in tech are up by 20% this month!",
+        "Demand for React developers continues to rise.",
+        "AI skills are becoming essential in the job market.",
+        "Remote work opportunities are increasing in tech.",
+      ];
+      setHeadlines(fetchedHeadlines);
+    };
+
+
     if (isSignedIn) {
       fetchUsers();
       checkUserProfile();
+      fetchHeadlines(); 
     }
   }, [isSignedIn, user]);
 
@@ -130,8 +144,10 @@ export default function Dashboard() {
           Tech Professionals
         </Typography>
 
+        <HeadlineTicker headlines={headlines} />
+        
         {/* Search Input */}
-        <Box display="flex" mb={2}>
+        <Box display="flex" sx={{ mt: 2, mb: 2 }}>
           <TextField
             label="Search profiles by name or skill"
             variant="outlined"
