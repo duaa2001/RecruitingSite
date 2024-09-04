@@ -94,7 +94,7 @@ export default function Home() {
           <Typography variant="h2" className="section-title" gutterBottom align="center">
             About Us
           </Typography>
-          <Typography variant="body1" paragraph align="center" sx={{ mb: 4 }}>
+          <Typography variant="body1" paragraph align="center" sx={{ mb: 4}}>
             Welcome to TechMarket, where innovation meets opportunity. We connect tech professionals 
             with the companies that need them, creating a vibrant marketplace for talent and technology.
           </Typography>
