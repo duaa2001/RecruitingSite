@@ -14,7 +14,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import LogoutIcon from '@mui/icons-material/Logout';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import "../app/styles/styles.css";
+import './styles/styles.css';
 
 import { useRouter } from 'next/navigation';
 import { useUser, useClerk } from '@clerk/nextjs';
