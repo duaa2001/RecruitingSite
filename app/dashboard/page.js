@@ -13,7 +13,7 @@ import { getFirestore, collection, getDocs, doc, getDoc } from 'firebase/firesto
 import { db } from '../../firebase';
 import ProfileDialog from '../components/ProfileDialog';;
 import "../styles/styles.css";
-import HeadlineTicker from '../components/ProfileDialog';
+import HeadlineTicker from '../components/HeadlineTicker';
 
 export default function Dashboard() {
   const [users, setUsers] = useState([]);
