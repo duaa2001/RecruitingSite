@@ -1,8 +1,11 @@
+
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { Typography, Box, Container, TextField, Button, Paper, Chip, CircularProgress, AppBar, Toolbar, Alert, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link } from '@mui/material';
+import {Typography, Box, Container, TextField, Button, Paper, Chip, CircularProgress, AppBar, Toolbar, Alert, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link, IconButton } from '@mui/material';
 import WorkIcon from '@mui/icons-material/Work';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 import { doc, getDoc, updateDoc, setDoc, deleteDoc } from 'firebase/firestore';
@@ -22,6 +25,9 @@ export default function EditProfilePage() {
   const [resume, setResume] = useState('');
   const [skills, setSkills] = useState([]);
   const [newSkill, setNewSkill] = useState('');
+  const [education, setEducation] = useState([]);
+  const [workExperience, setWorkExperience] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const { isLoaded, userId } = useAuth();
   const router = useRouter();
@@ -41,6 +47,9 @@ export default function EditProfilePage() {
             setLinkedin(userData.linkedin || '');
             setResume(userData.resume || '');
             setSkills(userData.skills || []);
+            setEducation(userData.education || []);
+            setWorkExperience(userData.workExperience || []);
+            setProjects(userData.projects || []);
           } else {
             setError('No profile found. Please create your profile.');
           }
@@ -78,6 +87,9 @@ export default function EditProfilePage() {
         linkedin,
         resume,
         skills,
+        education,
+        workExperience,
+        projects,
       };
 
       if (profile) {
@@ -118,6 +130,9 @@ export default function EditProfilePage() {
       setLinkedin('');
       setResume('');
       setSkills([]);
+      setEducation([]);
+      setWorkExperience([]);
+      setProjects([]);
       // Optionally, redirect to dashboard or home page
       router.push('/dashboard');
     } catch (err) {
@@ -138,6 +153,48 @@ export default function EditProfilePage() {
 
   const handleSkillDelete = (skillToDelete) => {
     setSkills(skills.filter(skill => skill !== skillToDelete));
+  };
+
+  const handleEducationChange = (index, field, value) => {
+    const newEducation = [...education];
+    newEducation[index] = { ...newEducation[index], [field]: value };
+    setEducation(newEducation);
+  };
+
+  const handleAddEducation = () => {
+    setEducation([...education, { major: '', degree: '', graduationYear: '' }]);
+  };
+
+  const handleRemoveEducation = (index) => {
+    setEducation(education.filter((_, i) => i !== index));
+  };
+
+  const handleWorkExperienceChange = (index, field, value) => {
+    const newWorkExperience = [...workExperience];
+    newWorkExperience[index] = { ...newWorkExperience[index], [field]: value };
+    setWorkExperience(newWorkExperience);
+  };
+
+  const handleAddWorkExperience = () => {
+    setWorkExperience([...workExperience, { position: '', company: '', startDate: '', endDate: '' }]);
+  };
+
+  const handleRemoveWorkExperience = (index) => {
+    setWorkExperience(workExperience.filter((_, i) => i !== index));
+  };
+
+  const handleProjectChange = (index, field, value) => {
+    const newProjects = [...projects];
+    newProjects[index] = { ...newProjects[index], [field]: value };
+    setProjects(newProjects);
+  };
+
+  const handleAddProject = () => {
+    setProjects([...projects, { title: '', youtubeLink: '', description: '' }]);
+  };
+
+  const handleRemoveProject = (index) => {
+    setProjects(projects.filter((_, i) => i !== index));
   };
 
   const isFormValid = name && bio && github && linkedin && resume && skills.length > 0;
@@ -250,6 +307,131 @@ export default function EditProfilePage() {
                 </Button>
               </Box>
             </Box>
+
+            <Box sx={{ mt: 2, mb: 2 }}>
+              <Typography variant="h6">Education</Typography>
+              {education.map((edu, index) => (
+                <Box key={index} sx={{ mb: 2 }}>
+                  <TextField
+                    label="Major"
+                    fullWidth
+                    value={edu.major}
+                    onChange={(e) => handleEducationChange(index, 'major', e.target.value)}
+                    margin="normal"
+                    required
+                  />
+                  <TextField
+                    label="Degree"
+                    fullWidth
+                    value={edu.degree}
+                    onChange={(e) => handleEducationChange(index, 'degree', e.target.value)}
+                    margin="normal"
+                    required
+                  />
+                  <TextField
+                    label="Graduation Year"
+                    fullWidth
+                    value={edu.graduationYear}
+                    onChange={(e) => handleEducationChange(index, 'graduationYear', e.target.value)}
+                    margin="normal"
+                    required
+                  />
+                  <IconButton onClick={() => handleRemoveEducation(index)} color="error">
+                    <DeleteIcon />
+                  </IconButton>
+                </Box>
+              ))}
+              <Button startIcon={<AddCircleOutlineIcon />} onClick={handleAddEducation} variant="outlined">
+                Add Education
+              </Button>
+            </Box>
+
+            <Box sx={{ mt: 2, mb: 2 }}>
+              <Typography variant="h6">Work Experience</Typography>
+              {workExperience.map((exp, index) => (
+                <Box key={index} sx={{ mb: 2 }}>
+                  <TextField
+                    label="Position"
+                    fullWidth
+                    value={exp.position}
+                    onChange={(e) => handleWorkExperienceChange(index, 'position', e.target.value)}
+                    margin="normal"
+                    required
+                  />
+                  <TextField
+                    label="Company"
+                    fullWidth
+                    value={exp.company}
+                    onChange={(e) => handleWorkExperienceChange(index, 'company', e.target.value)}
+                    margin="normal"
+                    required
+                  />
+                  <TextField
+                    label="Start Date"
+                    fullWidth
+                    value={exp.startDate}
+                    onChange={(e) => handleWorkExperienceChange(index, 'startDate', e.target.value)}
+                    margin="normal"
+                    required
+                  />
+                  <TextField
+                    label="End Date"
+                    fullWidth
+                    value={exp.endDate}
+                    onChange={(e) => handleWorkExperienceChange(index, 'endDate', e.target.value)}
+                    margin="normal"
+                    required
+                  />
+                  <IconButton onClick={() => handleRemoveWorkExperience(index)} color="error">
+                    <DeleteIcon />
+                  </IconButton>
+                </Box>
+              ))}
+              <Button startIcon={<AddCircleOutlineIcon />} onClick={handleAddWorkExperience} variant="outlined">
+                Add Work Experience
+              </Button>
+            </Box>
+
+            <Box sx={{ mt: 2, mb: 2 }}>
+              <Typography variant="h6">Projects</Typography>
+              {projects.map((project, index) => (
+                <Box key={index} sx={{ mb: 2 }}>
+                  <TextField
+                    label="Project Title"
+                    fullWidth
+                    value={project.title}
+                    onChange={(e) => handleProjectChange(index, 'title', e.target.value)}
+                    margin="normal"
+                    required
+                  />
+                  <TextField
+                    label="YouTube Link"
+                    fullWidth
+                    value={project.youtubeLink}
+                    onChange={(e) => handleProjectChange(index, 'youtubeLink', e.target.value)}
+                    margin="normal"
+                    required
+                  />
+                  <TextField
+                    label="Description"
+                    fullWidth
+                    multiline
+                    rows={3}
+                    value={project.description}
+                    onChange={(e) => handleProjectChange(index, 'description', e.target.value)}
+                    margin="normal"
+                    required
+                  />
+                  <IconButton onClick={() => handleRemoveProject(index)} color="error">
+                    <DeleteIcon />
+                  </IconButton>
+                </Box>
+              ))}
+              <Button startIcon={<AddCircleOutlineIcon />} onClick={handleAddProject} variant="outlined">
+                Add Project
+              </Button>
+            </Box>
+
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
               <Button 
                 type="submit" 
