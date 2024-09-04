@@ -1,11 +1,10 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Typography, Box, Container, TextField, IconButton, Button, Paper, Chip, Link, CircularProgress, AppBar, Toolbar } from '@mui/material';
+import { Typography, Box, Container, TextField, Button, Paper, Chip, Link, CircularProgress, AppBar, Toolbar } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { doc, setDoc } from 'firebase/firestore';
 import WorkIcon from '@mui/icons-material/Work';
 import { db } from '@/firebase';
 import "../styles/styles.css";
@@ -15,9 +14,9 @@ export default function CreateProfilePage() {
   const [bio, setBio] = useState('');
   const [github, setGithub] = useState('');
   const [linkedin, setLinkedin] = useState('');
+  const [resume, setResume] = useState('');
   const [skills, setSkills] = useState([]);
   const [newSkill, setNewSkill] = useState('');
-  const [resumeFile, setResumeFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { isLoaded, userId } = useAuth();
@@ -34,15 +33,6 @@ export default function CreateProfilePage() {
     setSkills(skills.filter(skill => skill !== skillToDelete));
   };
 
-  const handleResumeChange = (event) => {
-    const file = event.target.files[0];
-    if (file && file.type === 'application/pdf') {
-      setResumeFile(file);
-    } else {
-      setError('Please upload a PDF file');
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isLoaded || !userId) {
@@ -50,7 +40,7 @@ export default function CreateProfilePage() {
       return;
     }
 
-    if (!name || !bio || !github || !linkedin || skills.length === 0 || !resumeFile) {
+    if (!name || !bio || !github || !linkedin || skills.length === 0 || !resume) {
       setError('All fields are required');
       return;
     }
@@ -59,21 +49,13 @@ export default function CreateProfilePage() {
     setError(null);
 
     try {
-      let resumeURL = '';
-      if (resumeFile) {
-        const storage = getStorage();
-        const resumeRef = ref(storage, `resumes/${userId}/${resumeFile.name}`);
-        await uploadBytes(resumeRef, resumeFile);
-        resumeURL = await getDownloadURL(resumeRef);
-      }
-
       const userDoc = doc(db, 'users', userId);
       await setDoc(userDoc, {
         name,
         bio,
         github,
         linkedin,
-        resume: resumeURL,
+        resume,
         skills,
       });
 
@@ -163,15 +145,15 @@ export default function CreateProfilePage() {
               margin="normal"
               required
             />
-            <Box sx={{ mt: 2, mb: 2 }}>
-              <Typography variant="subtitle1">Resume (PDF only)</Typography>
-              <input
-                type="file"
-                accept="application/pdf"
-                onChange={handleResumeChange}
-                required
-              />
-            </Box>
+            <TextField
+              label="Resume URL"
+              fullWidth
+              value={resume}
+              onChange={(e) => setResume(e.target.value)}
+              margin="normal"
+              required
+              helperText="Enter the URL of your resume (e.g., Google Drive or Dropbox link)"
+            />
             <Box sx={{ mt: 2, mb: 2 }}>
               <Typography variant="h6">Skills</Typography>
               {skills.map((skill, index) => (
