@@ -87,11 +87,11 @@ export default function Dashboard() {
                 TechMarket
               </Typography>
             </Link>
-            <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ flexGrow: 1 }} /> 
             {hasProfile ? (
               <Button 
                 color="inherit" 
-                onClick={() => router.push('/profile')}
+                onClick={() => router.push('/edit_profile')}
                 sx={{ mr: 2 }}
               >
                 My Profile
@@ -135,7 +135,7 @@ export default function Dashboard() {
 
         {loading ? (
           <CircularProgress />
-        ) : (
+        ) : users.length > 0 ? (
           <Grid container spacing={3}>
             {users.map((user) => (
               <Grid item xs={12} sm={6} md={4} key={user.id}>
@@ -173,6 +173,8 @@ export default function Dashboard() {
               </Grid>
             ))}
           </Grid>
+        ) : (
+          <Typography>No users found.</Typography>
         )}
       </Container>
     </Box>

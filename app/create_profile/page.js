@@ -1,28 +1,30 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Typography, Box, Container, TextField, Button, Paper, Chip, CircularProgress, AppBar, Toolbar} from '@mui/material';
+import { Typography, Box, Container, TextField, Button, Paper, Chip, CircularProgress, AppBar, Toolbar } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { useUser } from '@clerk/nextjs';
+import { useAuth } from '@clerk/nextjs';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
-import { db } from '@/firebase'; // Adjust the path accordingly
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db } from '@/firebase';
 
-export default function CreateProfile() {
-  const [name, setName] = useState(''); // State for the name
+export default function CreateProfilePage() {
+  const [name, setName] = useState('');
   const [bio, setBio] = useState('');
   const [github, setGithub] = useState('');
   const [linkedin, setLinkedin] = useState('');
-  const [resume, setResume] = useState('');
   const [skills, setSkills] = useState([]);
-  const [skillInput, setSkillInput] = useState('');
+  const [newSkill, setNewSkill] = useState('');
+  const [resumeFile, setResumeFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { user, isLoaded, isSignedIn } = useUser();
+  const { isLoaded, userId } = useAuth();
   const router = useRouter();
 
   const handleSkillAdd = () => {
-    if (skillInput.trim() !== '') {
-      setSkills([...skills, skillInput.trim()]);
-      setSkillInput('');
+    if (newSkill && !skills.includes(newSkill)) {
+      setSkills([...skills, newSkill]);
+      setNewSkill('');
     }
   };
 
@@ -30,27 +32,55 @@ export default function CreateProfile() {
     setSkills(skills.filter(skill => skill !== skillToDelete));
   };
 
-  const handleSubmit = async () => {
-    if (!isSignedIn || !user) {
-      router.push('/signin');
+  const handleResumeChange = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type === 'application/pdf') {
+      setResumeFile(file);
+    } else {
+      setError('Please upload a PDF file');
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!isLoaded || !userId) {
+      setError('You must be logged in to create a profile');
       return;
     }
 
+    if (!name || !bio || !github || !linkedin || skills.length === 0 || !resumeFile) {
+      setError('All fields are required');
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
     try {
-      const db = getFirestore();
-      const userDoc = doc(db, 'users', user.id);
+      let resumeURL = '';
+      if (resumeFile) {
+        const storage = getStorage();
+        const resumeRef = ref(storage, `resumes/${userId}/${resumeFile.name}`);
+        await uploadBytes(resumeRef, resumeFile);
+        resumeURL = await getDownloadURL(resumeRef);
+      }
+
+      const userDoc = doc(db, 'users', userId);
       await setDoc(userDoc, {
-        name, // Include name in the data submission
+        name,
         bio,
         github,
         linkedin,
-        resume,
+        resume: resumeURL,
         skills,
       });
-      router.push('/profile');
+
+      router.push('/dashboard');
     } catch (err) {
       console.error('Error creating profile:', err);
-      setError('Failed to create profile');
+      setError('Failed to create profile. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -58,8 +88,8 @@ export default function CreateProfile() {
     return <CircularProgress />;
   }
 
-  if (!isSignedIn) {
-    router.push('/signin');
+  if (!userId) {
+    router.push('/sign-in');
     return null;
   }
 
@@ -71,66 +101,65 @@ export default function CreateProfile() {
             TechMarket
           </Typography>
           <Button color="inherit" onClick={() => router.push('/dashboard')}>Dashboard</Button>
-          <Button color="inherit" onClick={() => router.push('/profile')}>My Profile</Button>
-          {/* <Button color="inherit" onClick={handleSignOut}>Sign Out</Button> */}
         </Toolbar>
       </AppBar>
 
       <Container maxWidth="md">
         <Paper elevation={3} sx={{ mt: 4, p: 3 }}>
           <Typography variant="h4" gutterBottom>
-            Create Profile
+            Create Your Profile
           </Typography>
-          {error && <Typography color="error">{error}</Typography>}
-          <TextField
-            label="Name"
-            fullWidth
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            label="Bio"
-            fullWidth
-            multiline
-            rows={4}
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            label="GitHub"
-            fullWidth
-            value={github}
-            onChange={(e) => setGithub(e.target.value)}
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            label="LinkedIn"
-            fullWidth
-            value={linkedin}
-            onChange={(e) => setLinkedin(e.target.value)}
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            label="Resume"
-            fullWidth
-            value={resume}
-            onChange={(e) => setResume(e.target.value)}
-            sx={{ mb: 2 }}
-          />
-          <Box mb={2}>
+          {error && (
+            <Typography color="error" sx={{ mb: 2 }}>
+              {error}
+            </Typography>
+          )}
+          <form onSubmit={handleSubmit}>
             <TextField
-              label="Add Skill"
-              value={skillInput}
-              onChange={(e) => setSkillInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSkillAdd()}
-              sx={{ mb: 2 }}
+              label="Name"
+              fullWidth
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              margin="normal"
+              required
             />
-            <Button variant="outlined" onClick={handleSkillAdd} sx={{ mb: 2 }}>
-              Add Skill
-            </Button>
-            <Box>
+            <TextField
+              label="Bio"
+              fullWidth
+              multiline
+              rows={4}
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              margin="normal"
+              required
+            />
+            <TextField
+              label="GitHub URL"
+              fullWidth
+              value={github}
+              onChange={(e) => setGithub(e.target.value)}
+              margin="normal"
+              required
+            />
+            <TextField
+              label="LinkedIn URL"
+              fullWidth
+              value={linkedin}
+              onChange={(e) => setLinkedin(e.target.value)}
+              margin="normal"
+              required
+            />
+            <Box sx={{ mt: 2, mb: 2 }}>
+              <Typography variant="subtitle1">Resume (PDF only)</Typography>
+              <input
+                type="file"
+                accept="application/pdf"
+                onChange={handleResumeChange}
+                required
+              />
+            </Box>
+            <Box sx={{ mt: 2, mb: 2 }}>
+              <Typography variant="h6">Skills</Typography>
               {skills.map((skill, index) => (
                 <Chip
                   key={index}
@@ -139,11 +168,27 @@ export default function CreateProfile() {
                   sx={{ mr: 1, mb: 1 }}
                 />
               ))}
+              <Box sx={{ display: 'flex', mt: 1 }}>
+                <TextField
+                  label="Add Skill"
+                  value={newSkill}
+                  onChange={(e) => setNewSkill(e.target.value)}
+                  sx={{ mr: 1 }}
+                />
+                <Button variant="outlined" onClick={handleSkillAdd}>
+                  Add
+                </Button>
+              </Box>
             </Box>
-          </Box>
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
-            Create Profile
-          </Button>
+            <Button 
+              type="submit" 
+              variant="contained" 
+              color="primary"
+              disabled={loading}
+            >
+              {loading ? 'Creating Profile...' : 'Create Profile'}
+            </Button>
+          </form>
         </Paper>
       </Container>
     </Box>
