@@ -139,6 +139,7 @@ export default function Dashboard() {
           <Grid container spacing={3}>
             {users.map((user) => (
               <Grid item xs={12} sm={6} md={4} key={user.id}>
+                <Link href={`/profile/${user.id}`} passHref>
                 <Card>
                   <CardContent>
                     <Box display="flex" alignItems="center" mb={2}>
@@ -164,12 +165,13 @@ export default function Dashboard() {
                       </Link>
                     </Box>
                     <Box>
-                      {user.skills && user.skills.slice(0, 5).map((skill, index) => (
+                      {user.skills && user.skills.slice(0, 8).map((skill, index) => (
                         <Chip key={index} label={skill} sx={{ mr: 1, mb: 1 }} />
                       ))}
                     </Box>
                   </CardContent>
                 </Card>
+                </Link>
               </Grid>
             ))}
           </Grid>
