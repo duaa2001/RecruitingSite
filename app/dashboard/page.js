@@ -7,10 +7,9 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import DescriptionIcon from '@mui/icons-material/Description';
 import WorkIcon from '@mui/icons-material/Work';
 import LogoutIcon from '@mui/icons-material/Logout';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import { useRouter } from 'next/navigation';
 import { useUser, useClerk } from '@clerk/nextjs';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import "../styles/styles.css";
 
@@ -19,14 +18,13 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const { user, isLoaded, isSignedIn } = useUser();
   const [searchTerm, setSearchTerm] = useState('');
+  const [hasProfile, setHasProfile] = useState(false);
   const { signOut } = useClerk();
   const router = useRouter();
-
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const db = getFirestore();
         const usersCollection = collection(db, 'users');
         const userSnapshot = await getDocs(usersCollection);
         const userList = userSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -38,10 +36,19 @@ export default function Dashboard() {
       }
     };
 
+    const checkUserProfile = async () => {
+      if (user) {
+        const userDoc = doc(db, 'users', user.id);
+        const userSnapshot = await getDoc(userDoc);
+        setHasProfile(userSnapshot.exists());
+      }
+    };
+
     if (isSignedIn) {
       fetchUsers();
+      checkUserProfile();
     }
-  }, [isSignedIn]);
+  }, [isSignedIn, user]);
 
   const handleSignOut = async () => {
     try {
@@ -68,7 +75,6 @@ export default function Dashboard() {
     );
     setUsers(filteredUsers);
   };
-  
 
   return (
     <Box>
@@ -82,20 +88,23 @@ export default function Dashboard() {
               </Typography>
             </Link>
             <Box sx={{ flexGrow: 1 }} />
-            <Button 
-              color="inherit" 
-              onClick={() => router.push('/create_profile')}
-              sx={{ mr: 2 }}
-            >
-              Create Profile
-            </Button>
-            <Button 
-              color="inherit" 
-              onClick={() => router.push('/profile')}
-              sx={{ mr: 2 }}
-            >
-              My Profile
-            </Button>
+            {hasProfile ? (
+              <Button 
+                color="inherit" 
+                onClick={() => router.push('/profile')}
+                sx={{ mr: 2 }}
+              >
+                My Profile
+              </Button>
+            ) : (
+              <Button 
+                color="inherit" 
+                onClick={() => router.push('/create_profile')}
+                sx={{ mr: 2 }}
+              >
+                Create Profile
+              </Button>
+            )}
             <IconButton color="inherit" onClick={handleSignOut}>
               <LogoutIcon />
             </IconButton>
