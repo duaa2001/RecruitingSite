@@ -13,6 +13,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import LogoutIcon from '@mui/icons-material/Logout';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import "../app/styles/styles.css";
 
 import { useRouter } from 'next/navigation';
@@ -49,9 +50,19 @@ export default function Home() {
             </Link>
             <Box sx={{ flexGrow: 1 }} />
             {isSignedIn ? (
-              <IconButton color="inherit" onClick={handleSignOut}>
-                <LogoutIcon />
-              </IconButton>
+              <>
+                <Button 
+                  color="inherit" 
+                  startIcon={<DashboardIcon />} 
+                  onClick={() => router.push('/dashboard')}
+                  sx={{ mr: 2 }}
+                >
+                  Dashboard
+                </Button>
+                <IconButton color="inherit" onClick={handleSignOut}>
+                  <LogoutIcon />
+                </IconButton>
+              </>
             ) : (
               <>
                 <Button color="inherit" href="/signin">Sign In</Button>

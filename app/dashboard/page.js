@@ -8,7 +8,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import { useRouter } from 'next/navigation';
 import { useUser, useClerk } from '@clerk/nextjs';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
-import { db } from '@/firebase'; // Adjust the path accordingly
+import { db } from '../../firebase';
 
 export default function Dashboard() {
   const [users, setUsers] = useState([]);
