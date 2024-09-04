@@ -1,14 +1,18 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { TextField, Typography, Box, Container, Grid, Card, CardContent, Avatar, Link, Chip, AppBar, Toolbar, Button, CircularProgress } from '@mui/material';
+import { TextField, Typography, Box, Container, Grid, Card, CardContent, Avatar, Link, Chip, AppBar, Toolbar, Button, CircularProgress, IconButton } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import DescriptionIcon from '@mui/icons-material/Description';
+import WorkIcon from '@mui/icons-material/Work';
+import LogoutIcon from '@mui/icons-material/Logout';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import { useRouter } from 'next/navigation';
 import { useUser, useClerk } from '@clerk/nextjs';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
+import "../styles/styles.css";
 
 export default function Dashboard() {
   const [users, setUsers] = useState([]);
@@ -68,19 +72,35 @@ export default function Dashboard() {
 
   return (
     <Box>
-      <AppBar position="static" sx={{ backgroundColor: '#10a37f' }}>
-        <Toolbar>
-        <Typography variant="h2" component="div" sx={{ flexGrow: 1 }}>
-            <Link href="/" passHref>
-              <Button color="inherit" sx={{ textTransform: 'none', color: 'white', fontSize: '2rem'}}>
+      <AppBar position="static" color="transparent" elevation={0}>
+        <Container>
+          <Toolbar>
+            <Link href="/" underline="none" color="inherit">
+              <Typography variant="h6" component="div" sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
+                <WorkIcon sx={{ mr: 1 }} />
                 TechMarket
-              </Button>
+              </Typography>
             </Link>
-          </Typography>
-          <Button color="inherit" onClick={() => router.push('/create_profile')}>Create Profile</Button>
-          <Button color="inherit" onClick={() => router.push('/profile')}>My Profile</Button>
-          <Button color="inherit" onClick={handleSignOut}>Sign Out</Button>
-        </Toolbar>
+            <Box sx={{ flexGrow: 1 }} />
+            <Button 
+              color="inherit" 
+              onClick={() => router.push('/create_profile')}
+              sx={{ mr: 2 }}
+            >
+              Create Profile
+            </Button>
+            <Button 
+              color="inherit" 
+              onClick={() => router.push('/profile')}
+              sx={{ mr: 2 }}
+            >
+              My Profile
+            </Button>
+            <IconButton color="inherit" onClick={handleSignOut}>
+              <LogoutIcon />
+            </IconButton>
+          </Toolbar>
+        </Container>
       </AppBar>
 
       <Container sx={{ mt: 4 }}>
@@ -88,21 +108,21 @@ export default function Dashboard() {
           Tech Professionals
         </Typography>
 
-         {/* Search Input */}
-  <Box display="flex" mb={2} sx={{ backgroundColor: 'black' }}>
-    <TextField
-      label="Search profiles by name or skill"
-      variant="outlined"
-      size="small"
-      fullWidth
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      sx={{ mr: 2, backgroundColor: 'white', input: { color: 'black' }, label: { color: 'black' } }}
-    />
-    <Button variant="contained" sx={{ backgroundColor: 'black', color: 'white' }} onClick={handleSearch}>
-      Search
-    </Button>
-  </Box>
+        {/* Search Input */}
+        <Box display="flex" mb={2}>
+          <TextField
+            label="Search profiles by name or skill"
+            variant="outlined"
+            size="small"
+            fullWidth
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            sx={{ mr: 2 }}
+          />
+          <Button variant="contained" onClick={handleSearch}>
+            Search
+          </Button>
+        </Box>
 
         {loading ? (
           <CircularProgress />
