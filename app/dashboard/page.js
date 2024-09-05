@@ -20,7 +20,7 @@ import {
   CircularProgress,
   IconButton,
 } from "@mui/material";
-import Chatbot from "../api/chat/page.js";
+import Chatbot from "../components/chatbot.js";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import DescriptionIcon from "@mui/icons-material/Description";
