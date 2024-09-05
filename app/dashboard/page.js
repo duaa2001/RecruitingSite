@@ -1,19 +1,5 @@
 "use client";
 
-<<<<<<< Updated upstream
-import React, { useState, useEffect } from 'react';
-import { TextField, Typography, Box, Container, Grid, Card, CardContent, Avatar, Link, Chip, AppBar, Toolbar, Button, CircularProgress, IconButton } from '@mui/material';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import DescriptionIcon from '@mui/icons-material/Description';
-import WorkIcon from '@mui/icons-material/Work';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { useRouter } from 'next/navigation';
-import { useUser, useClerk } from '@clerk/nextjs';
-import { getFirestore, collection, getDocs, doc, getDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
-import ProfileDialog from '../components/ProfileDialog';;
-=======
 import React, { useState, useEffect } from "react";
 import {
   TextField,
@@ -47,9 +33,9 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
->>>>>>> Stashed changes
 import "../styles/styles.css";
-import HeadlineTicker from '../components/HeadlineTicker';
+import HeadlineTicker from "../components/HeadlineTicker";
+import ProfileDialog from "../components/ProfileDialog";
 
 export default function Dashboard() {
   const [users, setUsers] = useState([]);
@@ -65,7 +51,6 @@ export default function Dashboard() {
   const router = useRouter();
   const [filteredMajors, SetFilteredMajors] = useState([]);
   const [selectedMajors, setSelectedMajors] = useState([]);
-
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -141,23 +126,18 @@ export default function Dashboard() {
   }
 
   const handleSearch = () => {
-<<<<<<< Updated upstream
-    const filtered = users.filter(user => {
-      const nameMatch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
-      const skillsMatch = Array.isArray(user.skills) && user.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()));
+    const filtered = users.filter((user) => {
+      const nameMatch = user.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+      const skillsMatch =
+        Array.isArray(user.skills) &&
+        user.skills.some((skill) =>
+          skill.toLowerCase().includes(searchTerm.toLowerCase())
+        );
       return nameMatch || skillsMatch;
     });
     setFilteredUsers(filtered);
-=======
-    const filteredUsers = users.filter(
-      (user) =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.skills.some((skill) =>
-          skill.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-    );
-    setUsers(filteredUsers);
->>>>>>> Stashed changes
   };
 
   const ModifyCategory = (event) => {
@@ -173,171 +153,55 @@ export default function Dashboard() {
   console.log(`THIS IS THE SELECTED MAJORS: ${selectedMajors}`);
 
   return (
-    <Box className="Container">
-      <AppBar position="static" color="transparent" elevation={3}>
-        <Container>
-          <Toolbar>
-            <Link href="/" underline="none" color="inherit">
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{ flexGrow: 1, display: "flex", alignItems: "center" }}
-              >
-                <WorkIcon sx={{ mr: 1 }} />
-                TechMarket
-              </Typography>
-            </Link>
-            <Box sx={{ flexGrow: 1 }} />
-            {hasProfile ? (
-              <Button
-                color="inherit"
-                onClick={() => router.push("/edit_profile")}
-                sx={{ mr: 2 }}
-              >
-                My Profile
-              </Button>
-            ) : (
-              <Button
-                color="inherit"
-                onClick={() => router.push("/create_profile")}
-                sx={{ mr: 2 }}
-              >
-                Create Profile
-              </Button>
-            )}
-            <IconButton color="inherit" onClick={handleSignOut}>
-              <LogoutIcon />
-            </IconButton>
-          </Toolbar>
-        </Container>
-      </AppBar>
-
-<<<<<<< Updated upstream
-      <Container sx={{ mt: 4 }}>
-        <Typography variant="h4" gutterBottom>
-          Tech Professionals
-        </Typography>
-
-        <HeadlineTicker headlines={headlines} />
-        
-        {/* Search Input */}
-        <Box display="flex" sx={{ mt: 2, mb: 2 }}>
-          <TextField
-            label="Search profiles by name or skill"
-            variant="outlined"
-            size="small"
-            fullWidth
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ mr: 2 }}
-          />
-          <Button variant="contained" onClick={handleSearch} className='button' sx={{height:'40px'}}>
-            Search
-          </Button>
-=======
-      <Box display="flex">
-        <Box
-          className="Categories-Container"
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            mt: 4,
-            width: "10%",
-            border: "1px solid black",
-            borderRadius: "10px",
-            ml: 2,
-            mr: 2,
-          }}
-        >
-          <p
-            style={{
-              textAlign: "center",
-              fontWeight: "bold",
-              fontStyle: "italic",
-              fontSize: "1.2rem",
-              textDecoration: "underline",
-            }}
-          >
-            Categories
-          </p>
-          <Box className="TESTING" display="flex" flexDirection="column">
-            <Box
-              className="TESTING2"
-              sx={{
-                display: "flex",
-                alignItems: "flex-start",
-                flexDirection: "column",
-                p: 1,
-              }}
-            >
-              {["Web Development", "Mobile Development", "Data Science"].map(
-                (category) => (
-                  <Button
-                    key={category}
-                    value={category}
-                    onClick={ModifyCategory}
-                  >
-                    {category}
-                  </Button>
-                )
+    <>
+      <Box className="Container">
+        <AppBar position="static" color="transparent" elevation={3}>
+          <Container>
+            <Toolbar>
+              <Link href="/" underline="none" color="inherit">
+                <Typography
+                  variant="h6"
+                  component="div"
+                  sx={{ flexGrow: 1, display: "flex", alignItems: "center" }}
+                >
+                  <WorkIcon sx={{ mr: 1 }} />
+                  TechMarket
+                </Typography>
+              </Link>
+              <Box sx={{ flexGrow: 1 }} />
+              {hasProfile ? (
+                <Button
+                  color="inherit"
+                  onClick={() => router.push("/edit_profile")}
+                  sx={{ mr: 2 }}
+                >
+                  My Profile
+                </Button>
+              ) : (
+                <Button
+                  color="inherit"
+                  onClick={() => router.push("/create_profile")}
+                  sx={{ mr: 2 }}
+                >
+                  Create Profile
+                </Button>
               )}
-            </Box>
-          </Box>
->>>>>>> Stashed changes
-        </Box>
-        <Box className="User-Container" sx={{ mt: 4, width: "85%" }}>
+              <IconButton color="inherit" onClick={handleSignOut}>
+                <LogoutIcon />
+              </IconButton>
+            </Toolbar>
+          </Container>
+        </AppBar>
+
+        <Container sx={{ mt: 4 }}>
           <Typography variant="h4" gutterBottom>
             Tech Professionals
           </Typography>
 
-<<<<<<< Updated upstream
-        {loading ? (
-          <CircularProgress />
-        ) : filteredUsers.length > 0 ? (
-          <Grid container spacing={3}>
-            {filteredUsers.map((user) => (
-              <Grid item xs={12} sm={6} md={4} key={user.id}>
-                <Card onClick={() => handleOpenProfile(user)} style={{ cursor: 'pointer' }}>
-                  <CardContent>
-                    <Box display="flex" alignItems="center" mb={2}>
-                      <Avatar src={user.photoURL} alt={user.name} sx={{ mr: 2 }} />
-                      <Typography variant="h6">{user.name}</Typography>
-                    </Box>
-                    <Box mb={2}>
-                      <GitHubIcon sx={{ mr: 1 }} />
-                      GitHub
-                    </Box>
-                    <Box mb={2}>
-                      <LinkedInIcon sx={{ mr: 1 }} />
-                      LinkedIn
-                    </Box>
-                    <Box mb={2}>
-                      <DescriptionIcon sx={{ mr: 1 }} />
-                      Resume
-                    </Box>
-                    <Box>
-                      {user.skills && user.skills.slice(0, 8).map((skill, index) => (
-                        <Chip key={index} label={skill} sx={{ mr: 1, mb: 1 }} />
-                      ))}
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        ) : (
-          <Typography>No users found.</Typography>
-        )}
-      </Container>
+          <HeadlineTicker headlines={headlines} />
 
-      <ProfileDialog 
-        open={openDialog} 
-        onClose={handleCloseDialog} 
-        profile={selectedProfile} 
-      />
-=======
           {/* Search Input */}
-          <Box display="flex" mb={2}>
+          <Box display="flex" sx={{ mt: 2, mb: 2 }}>
             <TextField
               label="Search profiles by name or skill"
               variant="outlined"
@@ -347,18 +211,76 @@ export default function Dashboard() {
               onChange={(e) => setSearchTerm(e.target.value)}
               sx={{ mr: 2 }}
             />
-            <Button variant="contained" onClick={handleSearch}>
+            <Button
+              variant="contained"
+              onClick={handleSearch}
+              className="button"
+              sx={{ height: "40px" }}
+            >
               Search
             </Button>
+          </Box>
+        </Container>
+        <Box display="flex">
+          <Box
+            className="Categories-Container"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              mt: 4,
+              width: "10%",
+              border: "1px solid black",
+              borderRadius: "10px",
+              ml: 2,
+              mr: 2,
+            }}
+          >
+            <p
+              style={{
+                textAlign: "center",
+                fontWeight: "bold",
+                fontStyle: "italic",
+                fontSize: "1.2rem",
+                textDecoration: "underline",
+              }}
+            >
+              Categories
+            </p>
+            <Box className="TESTING" display="flex" flexDirection="column">
+              <Box
+                className="TESTING2"
+                sx={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  flexDirection: "column",
+                  p: 1,
+                }}
+              >
+                {["Web Development", "Mobile Development", "Data Science"].map(
+                  (category) => (
+                    <Button
+                      key={category}
+                      value={category}
+                      onClick={ModifyCategory}
+                    >
+                      {category}
+                    </Button>
+                  )
+                )}
+              </Box>
+            </Box>
           </Box>
 
           {loading ? (
             <CircularProgress />
-          ) : users.length > 0 ? (
+          ) : filteredUsers.length > 0 ? (
             <Grid container spacing={3}>
-              {users.map((user) => (
+              {filteredUsers.map((user) => (
                 <Grid item xs={12} sm={6} md={4} key={user.id}>
-                  <Card>
+                  <Card
+                    onClick={() => handleOpenProfile(user)}
+                    style={{ cursor: "pointer" }}
+                  >
                     <CardContent>
                       <Box display="flex" alignItems="center" mb={2}>
                         <Avatar
@@ -369,39 +291,21 @@ export default function Dashboard() {
                         <Typography variant="h6">{user.name}</Typography>
                       </Box>
                       <Box mb={2}>
-                        <Link
-                          href={user.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <GitHubIcon sx={{ mr: 1 }} />
-                          GitHub
-                        </Link>
+                        <GitHubIcon sx={{ mr: 1 }} />
+                        GitHub
                       </Box>
                       <Box mb={2}>
-                        <Link
-                          href={user.linkedin}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <LinkedInIcon sx={{ mr: 1 }} />
-                          LinkedIn
-                        </Link>
+                        <LinkedInIcon sx={{ mr: 1 }} />
+                        LinkedIn
                       </Box>
                       <Box mb={2}>
-                        <Link
-                          href={user.resume}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <DescriptionIcon sx={{ mr: 1 }} />
-                          Resume
-                        </Link>
+                        <DescriptionIcon sx={{ mr: 1 }} />
+                        Resume
                       </Box>
                       <Box>
                         {user.skills &&
                           user.skills
-                            .slice(0, 5)
+                            .slice(0, 8)
                             .map((skill, index) => (
                               <Chip
                                 key={index}
@@ -419,8 +323,13 @@ export default function Dashboard() {
             <Typography>No users found.</Typography>
           )}
         </Box>
+
+        <ProfileDialog
+          open={openDialog}
+          onClose={handleCloseDialog}
+          profile={selectedProfile}
+        />
       </Box>
->>>>>>> Stashed changes
-    </Box>
+    </>
   );
 }
