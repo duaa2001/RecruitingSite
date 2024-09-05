@@ -233,7 +233,6 @@ export default function Dashboard() {
                 onChange={(e) => setEducationFilter(e.target.value)}
               >
               <MenuItem value="">All</MenuItem>
-              <MenuItem value="Bachelor">Bachelor's</MenuItem>
               <MenuItem value="Bachelor">Bachelor&apos;s</MenuItem>
               <MenuItem value="Master">Master&apos;s</MenuItem>
             </Select>
