@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { Typography, Box, Container, TextField, Button, Paper, Chip, CircularProgress, AppBar, Toolbar, Alert, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link, IconButton } from '@mui/material';
+import { Typography, Box, Container, TextField, Button, Paper, Chip, CircularProgress, AppBar, Toolbar, Alert, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link, IconButton, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import WorkIcon from '@mui/icons-material/Work';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -319,14 +319,28 @@ export default function EditProfilePage() {
                     margin="normal"
                     required
                   />
-                  <TextField
+                  {/* <TextField
                     label="Degree"
                     fullWidth
                     value={edu.degree}
                     onChange={(e) => handleEducationChange(index, 'degree', e.target.value)}
                     margin="normal"
                     required
-                  />
+                  /> */}
+                  <FormControl fullWidth margin="normal" required>
+                    <InputLabel id={`degree-label-${index}`}>Degree</InputLabel>
+                    <Select
+                      labelId={`degree-label-${index}`}
+                      value={edu.degree}
+                      onChange={(e) => handleEducationChange(index, 'degree', e.target.value)}
+                      label="Degree"
+                    >
+                      <MenuItem value="Master">Master</MenuItem>
+                      <MenuItem value="Bachelor">Bachelor</MenuItem>
+                      <MenuItem value="Other">Other</MenuItem>
+                    </Select>
+                  </FormControl>
+
                   <TextField
                     label="Graduation Year"
                     fullWidth
@@ -445,7 +459,7 @@ export default function EditProfilePage() {
                 {updating ? 'Updating...' : (profile ? 'Update Profile' : 'Create Profile')}
               </Button>
 
-              
+
               {profile && (
                 <Button 
                   variant="contained" 

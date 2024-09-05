@@ -5,6 +5,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import DescriptionIcon from '@mui/icons-material/Description';
 import CloseIcon from '@mui/icons-material/Close';
+import YouTubeIcon from '@mui/icons-material/YouTube';
 
 export default function ProfileDialog({ open, onClose, profile }) {
   if (!profile) return null;
@@ -24,12 +25,15 @@ export default function ProfileDialog({ open, onClose, profile }) {
         >
           <CloseIcon />
         </IconButton>
+
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3 }}>
           <Avatar src={profile.photoURL} alt={profile.name} sx={{ width: 100, height: 100, mb: 2 }} />
           <Typography variant="h4">{profile.name}</Typography>
         </Box>
-        <Typography variant="h6" gutterBottom>Bio</Typography>
-        <Typography paragraph>{profile.bio}</Typography>
+
+        <Typography variant="h6" gutterBottom align='center'>Bio</Typography>
+        <Typography paragraph align='center'>{profile.bio}</Typography>
+
         <Box sx={{ display: 'flex', justifyContent: 'space-around', mb: 3 }}>
           <Link href={profile.github} target="_blank" rel="noopener noreferrer" sx={{ display: 'flex', alignItems: 'center' }}>
             <GitHubIcon sx={{ mr: 1 }} />
@@ -44,12 +48,66 @@ export default function ProfileDialog({ open, onClose, profile }) {
             Resume
           </Link>
         </Box>
-        <Typography variant="h6" gutterBottom>Skills</Typography>
-        <Box>
+        
+        <Typography variant="h6" gutterBottom   align='center'>Education</Typography>
+        <Box
+          sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around'  }}
+        >
+          {profile.education && profile.education.map((edu, index) => (
+            <Box key={index} mb={2}
+            sx={{ display: 'flex', flexDirection: 'column'   }}
+            >
+              <Typography variant="subtitle1">{index+1}. {edu.degree}</Typography>
+              <Typography variant="body2">{edu.major}</Typography>
+              <Typography variant="body2">{edu.graduationYear}</Typography>
+            </Box>
+          ))}
+        </Box>
+
+        <Typography variant="h6" gutterBottom align='center'>Skills</Typography>
+        <Box
+          sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'  }}
+        >
           {profile.skills && profile.skills.map((skill, index) => (
             <Chip key={index} label={skill} sx={{ mr: 1, mb: 1 }} />
           ))}
         </Box>
+
+        <Typography variant="h6" gutterBottom align='center'>Work Experience</Typography>
+        <Box
+          sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around'  }}
+        >
+          {profile.workExperience && profile.workExperience.map((work, index) => (
+            <Box key={index} mb={2}
+            sx={{ display: 'flex', flexDirection: 'column'  }}
+            >
+              {/* add number in frount of each work position */}
+              <Typography variant="subtitle1">{index+1}. {work.position}</Typography>
+              <Typography variant="body2">{work.company}</Typography>
+              <Typography variant="body2">From {work.startDate} To {work.endDate}</Typography>
+              <Typography variant="body2">{work.description}</Typography>
+            </Box>
+          ))}
+        </Box>
+
+        <Typography variant="h6" gutterBottom align='center'>Projects</Typography>
+        <Box
+          sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around'  }}
+        >
+          {profile.projects && profile.projects.map((project, index) => (
+            <Box key={index} mb={2}
+            sx={{ display: 'flex', flexDirection: 'column'  }}
+            >
+              <Typography variant="subtitle1">{index+1}. {project.title}</Typography>
+              <Typography variant="body2">{project.description}</Typography>
+              <Link href={project.youtubeLink} target="_blank" rel="noopener noreferrer" sx={{ display: 'flex', alignItems: 'center' }}>
+            <YouTubeIcon sx={{ mr: 1 }} />
+            Sample Video
+          </Link>
+            </Box>
+          ))}
+        </Box>
+
       </DialogContent>
     </Dialog>
   );

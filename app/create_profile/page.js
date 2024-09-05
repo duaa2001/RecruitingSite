@@ -244,19 +244,21 @@ export default function CreateProfilePage() {
                     margin="normal"
                     required
                   />
+                  
                   <FormControl fullWidth margin="normal" required>
-      <InputLabel id={`degree-label-${index}`}>Degree</InputLabel>
-      <Select
-        labelId={`degree-label-${index}`}
-        value={edu.degree}
-        onChange={(e) => handleEducationChange(index, 'degree', e.target.value)}
-        label="Degree"
-      >
-        <MenuItem value="Master">Master</MenuItem>
-        <MenuItem value="Bachelor">Bachelor</MenuItem>
-        <MenuItem value="Other">Other</MenuItem>
-      </Select>
-    </FormControl>
+                    <InputLabel id={`degree-label-${index}`}>Degree</InputLabel>
+                    <Select
+                      labelId={`degree-label-${index}`}
+                      value={edu.degree}
+                      onChange={(e) => handleEducationChange(index, 'degree', e.target.value)}
+                      label="Degree"
+                    >
+                      <MenuItem value="Master">Master</MenuItem>
+                      <MenuItem value="Bachelor">Bachelor</MenuItem>
+                      <MenuItem value="Other">Other</MenuItem>
+                    </Select>
+                  </FormControl>
+
                   {/* <TextField
                     label="Degree"
                     fullWidth
