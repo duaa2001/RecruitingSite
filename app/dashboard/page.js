@@ -234,8 +234,8 @@ export default function Dashboard() {
               >
               <MenuItem value="">All</MenuItem>
               <MenuItem value="Bachelor">Bachelor's</MenuItem>
-              <MenuItem value="Master">Master's</MenuItem>
-              <MenuItem value="PhD">PhD</MenuItem>
+              <MenuItem value="Bachelor">Bachelor&apos;s</MenuItem>
+              <MenuItem value="Master">Master&apos;s</MenuItem>
             </Select>
           </FormControl>
 
