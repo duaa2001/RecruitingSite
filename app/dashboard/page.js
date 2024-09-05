@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import {
+  Dialog,
   FormControl,
   InputLabel,
   Select,
@@ -22,6 +23,7 @@ import {
   CircularProgress,
   IconButton,
 } from "@mui/material";
+import Chatbot from "../components/chatbot.js";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import DescriptionIcon from "@mui/icons-material/Description";
@@ -54,8 +56,7 @@ export default function Dashboard() {
   const { signOut } = useClerk();
   const [headlines, setHeadlines] = useState([]);
   const router = useRouter();
-  const [filteredMajors, SetFilteredMajors] = useState([]);
-  const [selectedMajors, setSelectedMajors] = useState([]);
+  const [openChatbot, setOpenChatbot] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -121,6 +122,10 @@ export default function Dashboard() {
     setOpenDialog(false);
   };
 
+  const handleOpenChatbot = () => setOpenChatbot(true);
+  const handleCloseChatbot = () => setOpenChatbot(false);
+
+
   if (loading) {
     return <CircularProgress />;
   }
@@ -147,18 +152,6 @@ export default function Dashboard() {
     });
     setFilteredUsers(filtered);
   };
-
-  const ModifyCategory = (event) => {
-    if (selectedMajors.includes(event.target.value)) {
-      setSelectedMajors(
-        selectedMajors.filter((major) => major !== event.target.value)
-      );
-    } else {
-      setSelectedMajors([...selectedMajors, event.target.value]);
-    }
-    SetFilteredMajors([...filteredMajors, event.target.value]);
-  };
-  console.log(`THIS IS THE SELECTED MAJORS: ${selectedMajors}`);
 
   return (
     <>
@@ -207,6 +200,19 @@ export default function Dashboard() {
           </Typography>
 
           <HeadlineTicker headlines={headlines} />
+
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="h5" gutterBottom>
+              Chat Support
+            </Typography>
+            <Button variant="contained" onClick={handleOpenChatbot}>
+              Open Chatbot
+            </Button>
+          </Box>
+
+          <Dialog open={openChatbot} onClose={handleCloseChatbot} fullWidth maxWidth="md">
+            <Chatbot />
+          </Dialog>
 
           {/* Search Input */}
           <Box display="flex" sx={{ mt: 2, mb: 2 }}>
@@ -309,3 +315,4 @@ export default function Dashboard() {
     </>
   );
 }
+
