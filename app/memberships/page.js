@@ -1,13 +1,4 @@
-<<<<<<< Updated upstream
-export default function MembershipsPage() {
-    return (
-      <div>
-        <h1>Memberships</h1>
-        {/* Your code here */}
-      </div>
-    );
-  }
-=======
+
 "use client";
 
 import { Box, Typography, Container, CssBaseline } from "@mui/material";
@@ -115,4 +106,4 @@ export default function MembershipsPage() {
     </>
   );
 }
->>>>>>> Stashed changes
+
