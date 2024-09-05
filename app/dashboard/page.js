@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import {
+  Dialog,
   FormControl, InputLabel, Select, MenuItem,
   TextField,
   Typography,
@@ -19,6 +20,7 @@ import {
   CircularProgress,
   IconButton,
 } from "@mui/material";
+import Chatbot from "../api/chat/page.js";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import DescriptionIcon from "@mui/icons-material/Description";
@@ -51,8 +53,7 @@ export default function Dashboard() {
   const { signOut } = useClerk();
   const [headlines, setHeadlines] = useState([]);
   const router = useRouter();
-  const [filteredMajors, SetFilteredMajors] = useState([]);
-  const [selectedMajors, setSelectedMajors] = useState([]);
+  const [openChatbot, setOpenChatbot] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -118,6 +119,10 @@ export default function Dashboard() {
     setOpenDialog(false);
   };
 
+  const handleOpenChatbot = () => setOpenChatbot(true);
+  const handleCloseChatbot = () => setOpenChatbot(false);
+
+
   if (loading) {
     return <CircularProgress />;
   }
@@ -143,18 +148,6 @@ export default function Dashboard() {
     });
     setFilteredUsers(filtered);
   };
-
-  const ModifyCategory = (event) => {
-    if (selectedMajors.includes(event.target.value)) {
-      setSelectedMajors(
-        selectedMajors.filter((major) => major !== event.target.value)
-      );
-    } else {
-      setSelectedMajors([...selectedMajors, event.target.value]);
-    }
-    SetFilteredMajors([...filteredMajors, event.target.value]);
-  };
-  console.log(`THIS IS THE SELECTED MAJORS: ${selectedMajors}`);
 
   return (
     <>
@@ -204,6 +197,19 @@ export default function Dashboard() {
 
           <HeadlineTicker headlines={headlines} />
 
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="h5" gutterBottom>
+              Chat Support
+            </Typography>
+            <Button variant="contained" onClick={handleOpenChatbot}>
+              Open Chatbot
+            </Button>
+          </Box>
+
+          <Dialog open={openChatbot} onClose={handleCloseChatbot} fullWidth maxWidth="md">
+            <Chatbot />
+          </Dialog>
+
           {/* Search Input */}
           <Box display="flex" sx={{ mt: 2, mb: 2 }}>
             <TextField
@@ -239,108 +245,58 @@ export default function Dashboard() {
           </FormControl>
 
         </Container>
-        <Box display="flex">
-          <Box
-            className="Categories-Container"
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              mt: 4,
-              width: "10%",
-              border: "1px solid black",
-              borderRadius: "10px",
-              ml: 2,
-              mr: 2,
-            }}
-          >
-            <p
-              style={{
-                textAlign: "center",
-                fontWeight: "bold",
-                fontStyle: "italic",
-                fontSize: "1.2rem",
-                textDecoration: "underline",
-              }}
-            >
-              Categories
-            </p>
-            <Box className="TESTING" display="flex" flexDirection="column">
-              <Box
-                className="TESTING2"
-                sx={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  flexDirection: "column",
-                  p: 1,
-                }}
-              >
-                {["Web Development", "Mobile Development", "Data Science"].map(
-                  (category) => (
-                    <Button
-                      key={category}
-                      value={category}
-                      onClick={ModifyCategory}
-                    >
-                      {category}
-                    </Button>
-                  )
-                )}
-              </Box>
-            </Box>
-          </Box>
 
-          {loading ? (
-            <CircularProgress />
-          ) : filteredUsers.length > 0 ? (
-            <Grid container spacing={3}>
-              {filteredUsers.map((user) => (
-                <Grid item xs={12} sm={6} md={4} key={user.id}>
-                  <Card
-                    onClick={() => handleOpenProfile(user)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <CardContent>
-                      <Box display="flex" alignItems="center" mb={2}>
-                        <Avatar
-                          src={user.photoURL}
-                          alt={user.name}
-                          sx={{ mr: 2 }}
-                        />
-                        <Typography variant="h6">{user.name}</Typography>
-                      </Box>
-                      <Box mb={2}>
-                        <GitHubIcon sx={{ mr: 1 }} />
-                        GitHub
-                      </Box>
-                      <Box mb={2}>
-                        <LinkedInIcon sx={{ mr: 1 }} />
-                        LinkedIn
-                      </Box>
-                      <Box mb={2}>
-                        <DescriptionIcon sx={{ mr: 1 }} />
-                        Resume
-                      </Box>
-                      <Box>
-                        {user.skills &&
-                          user.skills
-                            .slice(0, 8)
-                            .map((skill, index) => (
-                              <Chip
-                                key={index}
-                                label={skill}
-                                sx={{ mr: 1, mb: 1 }}
-                              />
-                            ))}
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          ) : (
-            <Typography>No users found.</Typography>
-          )}
-        </Box>
+        {loading ? (
+          <CircularProgress />
+        ) : filteredUsers.length > 0 ? (
+          <Grid container spacing={3}>
+            {filteredUsers.map((user) => (
+              <Grid item xs={12} sm={6} md={4} key={user.id}>
+                <Card
+                  onClick={() => handleOpenProfile(user)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <CardContent>
+                    <Box display="flex" alignItems="center" mb={2}>
+                      <Avatar
+                        src={user.photoURL}
+                        alt={user.name}
+                        sx={{ mr: 2 }}
+                      />
+                      <Typography variant="h6">{user.name}</Typography>
+                    </Box>
+                    <Box mb={2}>
+                      <GitHubIcon sx={{ mr: 1 }} />
+                      GitHub
+                    </Box>
+                    <Box mb={2}>
+                      <LinkedInIcon sx={{ mr: 1 }} />
+                      LinkedIn
+                    </Box>
+                    <Box mb={2}>
+                      <DescriptionIcon sx={{ mr: 1 }} />
+                      Resume
+                    </Box>
+                    <Box>
+                      {user.skills &&
+                        user.skills
+                          .slice(0, 8)
+                          .map((skill, index) => (
+                            <Chip
+                              key={index}
+                              label={skill}
+                              sx={{ mr: 1, mb: 1 }}
+                            />
+                          ))}
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Typography>No users found.</Typography>
+        )}
 
         <ProfileDialog
           open={openDialog}
@@ -351,3 +307,4 @@ export default function Dashboard() {
     </>
   );
 }
+
