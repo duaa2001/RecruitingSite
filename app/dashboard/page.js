@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import {
+  FormControl, InputLabel, Select, MenuItem,
   TextField,
   Typography,
   Box,
@@ -40,6 +41,7 @@ import ProfileDialog from "../components/ProfileDialog";
 export default function Dashboard() {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState(users);
+  const [educationFilter, setEducationFilter] = useState('');
   const [loading, setLoading] = useState(true);
   const { user, isLoaded, isSignedIn } = useUser();
   const [searchTerm, setSearchTerm] = useState("");
@@ -135,7 +137,9 @@ export default function Dashboard() {
         user.skills.some((skill) =>
           skill.toLowerCase().includes(searchTerm.toLowerCase())
         );
-      return nameMatch || skillsMatch;
+      const educationMatch = educationFilter === '' || user.education === educationFilter; 
+  
+      return (nameMatch || skillsMatch) && educationMatch; 
     });
     setFilteredUsers(filtered);
   };
@@ -220,6 +224,21 @@ export default function Dashboard() {
               Search
             </Button>
           </Box>
+
+          <FormControl sx={{ mr: 2, minWidth: 150, mb: 2 }}>  {/* Add margin bottom */}
+            <InputLabel>Education</InputLabel>
+              <Select
+                value={educationFilter}
+                label="Education"
+                onChange={(e) => setEducationFilter(e.target.value)}
+              >
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="Bachelor">Bachelor's</MenuItem>
+              <MenuItem value="Master">Master's</MenuItem>
+              <MenuItem value="PhD">PhD</MenuItem>
+            </Select>
+          </FormControl>
+
         </Container>
         <Box display="flex">
           <Box
