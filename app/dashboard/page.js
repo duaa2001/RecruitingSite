@@ -2,7 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import {
-  FormControl, InputLabel, Select, MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
   TextField,
   Typography,
   Box,
@@ -41,7 +44,7 @@ import ProfileDialog from "../components/ProfileDialog";
 export default function Dashboard() {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState(users);
-  const [educationFilter, setEducationFilter] = useState('');
+  const [educationFilter, setEducationFilter] = useState("");
   const [loading, setLoading] = useState(true);
   const { user, isLoaded, isSignedIn } = useUser();
   const [searchTerm, setSearchTerm] = useState("");
@@ -137,9 +140,10 @@ export default function Dashboard() {
         user.skills.some((skill) =>
           skill.toLowerCase().includes(searchTerm.toLowerCase())
         );
-      const educationMatch = educationFilter === '' || user.education === educationFilter; 
-  
-      return (nameMatch || skillsMatch) && educationMatch; 
+      const educationMatch =
+        educationFilter === "" || user.education === educationFilter;
+
+      return (nameMatch || skillsMatch) && educationMatch;
     });
     setFilteredUsers(filtered);
   };
@@ -225,128 +229,82 @@ export default function Dashboard() {
             </Button>
           </Box>
 
-          <FormControl sx={{ mr: 2, minWidth: 150, mb: 2 }}>  {/* Add margin bottom */}
+          <FormControl sx={{ mr: 2, minWidth: 150, mb: 2 }}>
+            {" "}
+            {/* Add margin bottom */}
             <InputLabel>Education</InputLabel>
-              <Select
-                value={educationFilter}
-                label="Education"
-                onChange={(e) => setEducationFilter(e.target.value)}
-              >
+            <Select
+              value={educationFilter}
+              label="Education"
+              onChange={(e) => setEducationFilter(e.target.value)}
+            >
               <MenuItem value="">All</MenuItem>
               <MenuItem value="Bachelor">Bachelor&apos;s</MenuItem>
               <MenuItem value="Master">Master&apos;s</MenuItem>
             </Select>
           </FormControl>
-
         </Container>
-        <Box display="flex">
-          <Box
-            className="Categories-Container"
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              mt: 4,
-              width: "10%",
-              border: "1px solid black",
-              borderRadius: "10px",
-              ml: 2,
-              mr: 2,
-            }}
-          >
-            <p
-              style={{
-                textAlign: "center",
-                fontWeight: "bold",
-                fontStyle: "italic",
-                fontSize: "1.2rem",
-                textDecoration: "underline",
-              }}
-            >
-              Categories
-            </p>
-            <Box className="TESTING" display="flex" flexDirection="column">
-              <Box
-                className="TESTING2"
-                sx={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  flexDirection: "column",
-                  p: 1,
-                }}
-              >
-                {["Web Development", "Mobile Development", "Data Science"].map(
-                  (category) => (
-                    <Button
-                      key={category}
-                      value={category}
-                      onClick={ModifyCategory}
+        <Box width={"100%"} display="flex" justifyContent="center">
+          <Box mx={4} width={"70%"}>
+            {loading ? (
+              <CircularProgress />
+            ) : filteredUsers.length > 0 ? (
+              <Grid container spacing={3}>
+                {filteredUsers.map((user) => (
+                  <Grid item xs={12} sm={6} md={4} key={user.id}>
+                    <Card
+                      onClick={() => handleOpenProfile(user)}
+                      style={{ cursor: "pointer" }}
                     >
-                      {category}
-                    </Button>
-                  )
-                )}
-              </Box>
-            </Box>
+                      <CardContent>
+                        <Box display="flex" alignItems="center" mb={2}>
+                          <Avatar
+                            src={user.photoURL}
+                            alt={user.name}
+                            sx={{ mr: 2 }}
+                          />
+                          <Typography variant="h6">{user.name}</Typography>
+                        </Box>
+                        <Box mb={2}>
+                          <GitHubIcon sx={{ mr: 1 }} />
+                          GitHub
+                        </Box>
+                        <Box mb={2}>
+                          <LinkedInIcon sx={{ mr: 1 }} />
+                          LinkedIn
+                        </Box>
+                        <Box mb={2}>
+                          <DescriptionIcon sx={{ mr: 1 }} />
+                          Resume
+                        </Box>
+                        <Box>
+                          {user.skills &&
+                            user.skills
+                              .slice(0, 8)
+                              .map((skill, index) => (
+                                <Chip
+                                  key={index}
+                                  label={skill}
+                                  sx={{ mr: 1, mb: 1 }}
+                                />
+                              ))}
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            ) : (
+              <Typography>No users found.</Typography>
+            )}
           </Box>
 
-          {loading ? (
-            <CircularProgress />
-          ) : filteredUsers.length > 0 ? (
-            <Grid container spacing={3}>
-              {filteredUsers.map((user) => (
-                <Grid item xs={12} sm={6} md={4} key={user.id}>
-                  <Card
-                    onClick={() => handleOpenProfile(user)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <CardContent>
-                      <Box display="flex" alignItems="center" mb={2}>
-                        <Avatar
-                          src={user.photoURL}
-                          alt={user.name}
-                          sx={{ mr: 2 }}
-                        />
-                        <Typography variant="h6">{user.name}</Typography>
-                      </Box>
-                      <Box mb={2}>
-                        <GitHubIcon sx={{ mr: 1 }} />
-                        GitHub
-                      </Box>
-                      <Box mb={2}>
-                        <LinkedInIcon sx={{ mr: 1 }} />
-                        LinkedIn
-                      </Box>
-                      <Box mb={2}>
-                        <DescriptionIcon sx={{ mr: 1 }} />
-                        Resume
-                      </Box>
-                      <Box>
-                        {user.skills &&
-                          user.skills
-                            .slice(0, 8)
-                            .map((skill, index) => (
-                              <Chip
-                                key={index}
-                                label={skill}
-                                sx={{ mr: 1, mb: 1 }}
-                              />
-                            ))}
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          ) : (
-            <Typography>No users found.</Typography>
-          )}
+          <ProfileDialog
+            open={openDialog}
+            onClose={handleCloseDialog}
+            profile={selectedProfile}
+          />
         </Box>
-
-        <ProfileDialog
-          open={openDialog}
-          onClose={handleCloseDialog}
-          profile={selectedProfile}
-        />
       </Box>
     </>
   );
