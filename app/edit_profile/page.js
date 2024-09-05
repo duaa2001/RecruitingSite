@@ -368,16 +368,20 @@ export default function EditProfilePage() {
                   <TextField
                     label="Start Date"
                     fullWidth
+                    type="date"
                     value={exp.startDate}
                     onChange={(e) => handleWorkExperienceChange(index, 'startDate', e.target.value)}
+                    InputLabelProps={{ shrink: true }}
                     margin="normal"
                     required
                   />
                   <TextField
                     label="End Date"
                     fullWidth
+                    type="date"
                     value={exp.endDate}
                     onChange={(e) => handleWorkExperienceChange(index, 'endDate', e.target.value)}
+                    InputLabelProps={{ shrink: true }}
                     margin="normal"
                     required
                   />
@@ -440,6 +444,8 @@ export default function EditProfilePage() {
               >
                 {updating ? 'Updating...' : (profile ? 'Update Profile' : 'Create Profile')}
               </Button>
+
+              
               {profile && (
                 <Button 
                   variant="contained" 

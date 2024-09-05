@@ -2,7 +2,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Typography, Box, Container, TextField, Button, Paper, Chip, Link, CircularProgress, AppBar, Toolbar, IconButton } from '@mui/material';
+import { Typography, Box, Container, TextField, Button, Paper, Chip, Link, CircularProgress, AppBar, Toolbar, IconButton ,MenuItem, Select, InputLabel, FormControl} from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 import { doc, setDoc } from 'firebase/firestore';
@@ -115,8 +115,8 @@ export default function CreateProfilePage() {
 
       router.push('/dashboard');
     } catch (err) {
-      console.error('Error creating profile:', err);
-      setError('Failed to create profile. Please try again.');
+      console.error('Error creating profile:', err.message); // Log the exact error message
+  setError(`Failed to create profile. Error: ${err.message}`); // Display the error
     } finally {
       setLoading(false);
     }
@@ -244,14 +244,28 @@ export default function CreateProfilePage() {
                     margin="normal"
                     required
                   />
-                  <TextField
+                  <FormControl fullWidth margin="normal" required>
+      <InputLabel id={`degree-label-${index}`}>Degree</InputLabel>
+      <Select
+        labelId={`degree-label-${index}`}
+        value={edu.degree}
+        onChange={(e) => handleEducationChange(index, 'degree', e.target.value)}
+        label="Degree"
+      >
+        <MenuItem value="Master">Master</MenuItem>
+        <MenuItem value="Bachelor">Bachelor</MenuItem>
+        <MenuItem value="Other">Other</MenuItem>
+      </Select>
+    </FormControl>
+                  {/* <TextField
                     label="Degree"
                     fullWidth
                     value={edu.degree}
                     onChange={(e) => handleEducationChange(index, 'degree', e.target.value)}
                     margin="normal"
                     required
-                  />
+                  /> */}
+
                   <TextField
                     label="Graduation Year"
                     fullWidth
@@ -291,22 +305,34 @@ export default function CreateProfilePage() {
                     margin="normal"
                     required
                   />
+
+                  
+
+  
                   <TextField
                     label="Start Date"
                     fullWidth
+                    type="date"
                     value={work.startDate}
                     onChange={(e) => handleWorkExperienceChange(index, 'startDate', e.target.value)}
+                    InputLabelProps={{ shrink: true }}
                     margin="normal"
                     required
                   />
+                  
+      
+                  
                   <TextField
                     label="End Date"
                     fullWidth
+                    type="date"
                     value={work.endDate}
                     onChange={(e) => handleWorkExperienceChange(index, 'endDate', e.target.value)}
+                    InputLabelProps={{ shrink: true }}
                     margin="normal"
                     required
                   />
+                  
                   <IconButton aria-label="delete" color="secondary" onClick={() => handleRemoveWorkExperience(index)}>
                     <DeleteIcon />
                   </IconButton>
