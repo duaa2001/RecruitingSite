@@ -1,14 +1,23 @@
 // components/ProfileDialog.js
-import React from 'react';
-import { Dialog, DialogContent, Typography, Avatar, Link, Box, Chip, IconButton } from '@mui/material';
+import React, { useState } from 'react';
+import { Dialog, DialogContent, Typography, Avatar, Link, Box, Chip, IconButton, Button } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import DescriptionIcon from '@mui/icons-material/Description';
 import CloseIcon from '@mui/icons-material/Close';
 import YouTubeIcon from '@mui/icons-material/YouTube';
+import Chatbot from './chatbot';
 
 export default function ProfileDialog({ open, onClose, profile }) {
   if (!profile) return null;
+
+  const [openChatbot, setOpenChatbot] = useState(false); 
+  const [chatbotMessage, setChatbotMessage] = useState(""); 
+
+  const handleAskQuestion = (profileName) => {
+    setOpenChatbot(true); 
+    setChatbotMessage(`I have a question about ${profileName}.`); 
+  };
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
@@ -107,6 +116,19 @@ export default function ProfileDialog({ open, onClose, profile }) {
             </Box>
           ))}
         </Box>
+        <Button
+        variant="contained"
+        color="primary"
+        onClick={() => handleAskQuestion(profile.name)}
+        sx={{ mt: 3 }}
+        >
+          Ask a Question about {profile.name}
+        </Button>
+
+        {/* Chatbot Dialog */}
+        <Dialog open={openChatbot} onClose={() => setOpenChatbot(false)} fullWidth maxWidth="md">
+        <Chatbot initialMessage={chatbotMessage} profile={profile} />
+        </Dialog>
 
       </DialogContent>
     </Dialog>

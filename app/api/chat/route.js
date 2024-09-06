@@ -12,7 +12,7 @@ export async function POST(req) {
     messages: [
       {
         role: "system",
-        content: "Customer Support AI for Headstarter",
+        content: "Customer Support AI for Tech Marketplace, respond with relevant details collected from person's profile",
       },
       ...data,
     ],

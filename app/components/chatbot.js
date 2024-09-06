@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Box, Stack, TextField, Button, Typography } from "@mui/material";
 
-export default function ChatBot() {
+export default function ChatBot({ initialMessage, profile }) {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
@@ -28,7 +28,16 @@ export default function ChatBot() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify([...messages, { role: "user", content: message }]),
+        body: JSON.stringify([
+          ...messages,
+          { role: "user", content: message },
+          { role: "system", content: `This is a conversation about ${profile?.name || 'an unknown person'}. 
+          Bio: ${profile?.bio || 'No bio available'}. 
+          Skills: ${profile?.skills?.length ? profile.skills.join(', ') : 'No skills available'}. 
+          Education: ${profile?.education?.length ? profile.education.map(edu => `${edu.degree} in ${edu.major} (${edu.graduationYear})`).join(', ') : 'No education information available'}.
+          Projects: ${profile?.projects?.length ? profile.projects.map(p => p.title).join(', ') : 'No projects available'}.`
+        }, // Adding profile-specific context
+        ]),
       });
 
       if (!response.ok) {
@@ -83,7 +92,7 @@ export default function ChatBot() {
         fontWeight="bold"
         textAlign="center"
       >
-        Welcome to our Latest Chatbot!
+        Chat Support - Profile of {profile.name}  {/* Display profile name */}
       </Typography>
 
       <Stack
