@@ -9,10 +9,11 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import Chatbot from './chatbot';
 
 export default function ProfileDialog({ open, onClose, profile }) {
-  if (!profile) return null;
 
   const [openChatbot, setOpenChatbot] = useState(false); 
-  const [chatbotMessage, setChatbotMessage] = useState(""); 
+  const [chatbotMessage, setChatbotMessage] = useState("");
+
+  if (!profile) return null;
 
   const handleAskQuestion = (profileName) => {
     setOpenChatbot(true); 
