@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from 'firebase/firestore';
+import { getAnalytics } from "firebase/analytics";
 
 
 const firebaseConfig = {
@@ -16,9 +17,10 @@ const firebaseConfig = {
   projectId: "recruitingsite-512b3",
   storageBucket: "recruitingsite-512b3.appspot.com",
   messagingSenderId: "102204045229",
-  appId: "1:102204045229:web:541f092028caf4ed725324"
+  appId: "1:102204045229:web:541f092028caf4ed725324",
+  measurementId: "G-Q03M8FVGC2"
 };
 
-
+const analytics = getAnalytics(app);
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
