@@ -1,6 +1,7 @@
 "use client";
 import { SignIn } from "@clerk/nextjs";
 import { Toolbar, Box, Typography, Button, CssBaseline } from "@mui/material";
+import Link from 'next/link'; // Import Link component
 
 export default function SignInPage() {
   return (
@@ -27,59 +28,47 @@ export default function SignInPage() {
           }}
         >
           <Box>
-            <Button
-              color="inherit"
-              sx={{
-                margin: "3rem",
-                fontSize: ".9rem",
-                "&:hover": { transition: ".75s", backgroundColor: "gray" },
-              }}
-              onClick={() => {
-                window.location.href("/");
-              }}
-            >
-              Home
-            </Button>
+            <Link href="/" passHref>
+              <Button
+                color="inherit"
+                sx={{
+                  margin: "3rem",
+                  fontSize: ".9rem",
+                  color: "white",
+                  "&:hover": { transition: ".75s", backgroundColor: "gray" },
+                }}
+              >
+                Home
+              </Button>
+            </Link>
 
-            <Button
-              color="inherit"
-              sx={{
-                margin: "3rem",
-                fontSize: ".9rem",
-                "&:hover": { transition: ".75s", backgroundColor: "gray" },
-              }}
-              onClick={() => {
-                window.location.href = "/memberships";
-              }}
-            >
-              Memberships
-            </Button>
-            <Button
-              color="inherit"
-              sx={{
-                margin: "3rem",
-                fontSize: ".9rem",
-                "&:hover": { transition: ".75s", backgroundColor: "gray" },
-              }}
-              onClick={() => {
-                window.location.href = "/about-us";
-              }}
-            >
-              About US
-            </Button>
-            <Button
-              color="inherit"
-              sx={{
-                mx: "3rem",
-                fontSize: ".9rem",
-                "&:hover": { transition: ".75s", backgroundColor: "gray" },
-              }}
-              onClick={() => {
-                window.location.href = "/contact-us";
-              }}
-            >
-              Contact
-            </Button>
+            <Link href="/aboutus" passHref>
+              <Button
+                color="inherit"
+                sx={{
+                  margin: "3rem",
+                  fontSize: ".9rem",
+                  color: "white",
+                  "&:hover": { transition: ".75s", backgroundColor: "gray" },
+                }}
+              >
+                About US
+              </Button>
+            </Link>
+
+            <Link href="/memberships" passHref>
+              <Button
+                color="inherit"
+                sx={{
+                  margin: "3rem",
+                  fontSize: ".9rem",
+                  color: "white",
+                  "&:hover": { transition: ".75s", backgroundColor: "gray" },
+                }}
+              >
+                Memberships
+              </Button>
+            </Link>
           </Box>
         </Toolbar>
         <Box
@@ -101,3 +90,4 @@ export default function SignInPage() {
     </>
   );
 }
+

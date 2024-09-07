@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { SignUp } from "@clerk/nextjs";
 import Image from "next/image";
+import Link from "next/link"; // Import Link for navigation
 
 export default function SignUpPage() {
   return (
@@ -36,59 +37,47 @@ export default function SignUpPage() {
           }}
         >
           <Box>
-            <Button
-              color="'inherit"
-              sx={{
-                margin: "3rem",
-                fontSize: ".9rem",
-                "&:hover": { transition: ".75s", backgroundColor: "gray" },
-              }}
-              onClick={() => {
-                window.location.href("/");
-              }}
-            >
-              Home
-            </Button>
+            <Link href="/" passHref>
+              <Button
+                color="inherit"
+                sx={{
+                  margin: "3rem",
+                  fontSize: ".9rem",
+                  color: "white",
+                  "&:hover": { transition: ".75s", backgroundColor: "gray" },
+                }}
+              >
+                Home
+              </Button>
+            </Link>
 
-            <Button
-              color="inherit"
-              sx={{
-                margin: "3rem",
-                fontSize: ".9rem",
-                "&:hover": { transition: ".75s", backgroundColor: "gray" },
-              }}
-              onClick={() => {
-                window.location.href = "/memberships";
-              }}
-            >
-              Memberships
-            </Button>
-            <Button
-              color="inherit"
-              sx={{
-                margin: "3rem",
-                fontSize: ".9rem",
-                "&:hover": { transition: ".75s", backgroundColor: "gray" },
-              }}
-              onClick={() => {
-                window.location.href = "/about-us";
-              }}
-            >
-              About US
-            </Button>
-            <Button
-              color="inherit"
-              sx={{
-                mx: "3rem",
-                fontSize: ".9rem",
-                "&:hover": { transition: ".75s", backgroundColor: "gray" },
-              }}
-              onClick={() => {
-                window.location.href = "/contact-us";
-              }}
-            >
-              Contact
-            </Button>
+            <Link href="/memberships" passHref>
+              <Button
+                color="inherit"
+                sx={{
+                  margin: "3rem",
+                  fontSize: ".9rem",
+                  color: "white",
+                  "&:hover": { transition: ".75s", backgroundColor: "gray" },
+                }}
+              >
+                Memberships
+              </Button>
+            </Link>
+
+            <Link href="/aboutus" passHref>
+              <Button
+                color="inherit"
+                sx={{
+                  margin: "3rem",
+                  fontSize: ".9rem",
+                  color: "white",
+                  "&:hover": { transition: ".75s", backgroundColor: "gray" },
+                }}
+              >
+                About Us
+              </Button>
+            </Link>
           </Box>
         </Toolbar>
         <Container
@@ -135,3 +124,4 @@ export default function SignUpPage() {
     </>
   );
 }
+
