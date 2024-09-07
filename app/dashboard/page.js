@@ -56,7 +56,6 @@ export default function Dashboard() {
   const { signOut } = useClerk();
   const [headlines, setHeadlines] = useState([]);
   const router = useRouter();
-  const [openChatbot, setOpenChatbot] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -122,19 +121,6 @@ export default function Dashboard() {
     setOpenDialog(false);
   };
 
-  // const handleOpenChatbot = () => setOpenChatbot(true);
-  // const handleCloseChatbot = () => setOpenChatbot(false);
-
-
-  if (loading) {
-    return <CircularProgress />;
-  }
-
-  if (!isSignedIn) {
-    router.push("/signin");
-    return null;
-  }
-
   const handleSearch = () => {
     const filtered = users.filter((user) => {
       const nameMatch = user.name
@@ -155,55 +141,64 @@ export default function Dashboard() {
 
   return (
     <>
-      <Box className="Container">
-        <AppBar position="static" color="transparent" elevation={3}>
+      <Box className="Container" sx={{ backgroundColor: "linear-gradient(to right, #f0f4f8, #f7f7f7)", minHeight: "100vh", paddingBottom: "2rem" }}>
+        {/* Enhanced AppBar */}
+        <AppBar position="static" sx={{ backgroundColor: "#2b3a42", color: "#fff", boxShadow: "none" }}>
           <Container>
             <Toolbar>
               <Link href="/" underline="none" color="inherit">
-                <Typography
-                  variant="h6"
-                  component="div"
-                  sx={{ flexGrow: 1, display: "flex", alignItems: "center" }}
-                >
-                  <WorkIcon sx={{ mr: 1 }} />
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1, display: "flex", alignItems: "center", fontWeight: 700 }}>
+                  <WorkIcon sx={{ mr: 1, color: "#4caf50" }} />
                   TechMarket
                 </Typography>
               </Link>
               <Box sx={{ flexGrow: 1 }} />
               {hasProfile ? (
                 <Button
-                  color="inherit"
                   onClick={() => router.push("/edit_profile")}
-                  sx={{ mr: 2 }}
+                  sx={{
+                    backgroundColor: "#4caf50",
+                    color: "#fff",
+                    borderRadius: "30px",
+                    fontWeight: "bold",
+                    padding: "6px 20px",
+                    "&:hover": { backgroundColor: "#388e3c" },
+                  }}
                 >
                   My Profile
                 </Button>
               ) : (
                 <Button
-                  color="inherit"
                   onClick={() => router.push("/create_profile")}
-                  sx={{ mr: 2 }}
+                  sx={{
+                    backgroundColor: "#4caf50",
+                    color: "#fff",
+                    borderRadius: "30px",
+                    fontWeight: "bold",
+                    padding: "6px 20px",
+                    "&:hover": { backgroundColor: "#388e3c" },
+                  }}
                 >
                   Create Profile
                 </Button>
               )}
-              <IconButton color="inherit" onClick={handleSignOut}>
-                <LogoutIcon />
+              <IconButton onClick={handleSignOut} sx={{ color: "#fff" }}>
+              <LogoutIcon sx={{ color: '#28a745' }} />
               </IconButton>
             </Toolbar>
           </Container>
         </AppBar>
-
+  
         <Container sx={{ mt: 4 }}>
-          <Typography variant="h4" gutterBottom>
+          {/* Enhanced Typography */}
+          <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold", color: "#2b3a42" }}>
             Tech Professionals
           </Typography>
-
+  
           <HeadlineTicker headlines={headlines} />
-
-
+  
           {/* Search Input */}
-          <Box display="flex" sx={{ mt: 2, mb: 2 }}>
+          <Box display="flex" sx={{ mt: 3, mb: 4 }}>
             <TextField
               label="Search profiles by name or skill"
               variant="outlined"
@@ -211,35 +206,67 @@ export default function Dashboard() {
               fullWidth
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              sx={{ mr: 2 }}
+              sx={{
+                mr: 2,
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#cfd8dc",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "#90a4ae",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#4caf50",
+                  },
+                },
+              }}
             />
             <Button
               variant="contained"
               onClick={handleSearch}
-              className="button"
-              sx={{ height: "40px" }}
+              sx={{
+                backgroundColor: "#2196f3",
+                color: "#fff",
+                borderRadius: "30px",
+                fontWeight: "bold",
+                padding: "6px 20px",
+                "&:hover": { backgroundColor: "#1976d2" },
+              }}
             >
               Search
             </Button>
           </Box>
-
-          <FormControl sx={{ mr: 2, minWidth: 150, mb: 2 }}>
-            {" "}
-            {/* Add margin bottom */}
+  
+          <FormControl sx={{ mr: 2, minWidth: 150, mb: 4 }}>
             <InputLabel>Education</InputLabel>
             <Select
               value={educationFilter}
               label="Education"
               onChange={(e) => setEducationFilter(e.target.value)}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#cfd8dc",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "#90a4ae",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#4caf50",
+                  },
+                },
+              }}
             >
               <MenuItem value="">All</MenuItem>
-              <MenuItem value="Bachelor">Bachelor&apos;s</MenuItem>
-              <MenuItem value="Master">Master&apos;s</MenuItem>
+              <MenuItem value="Bachelor">Bachelor's</MenuItem>
+              <MenuItem value="Master">Master's</MenuItem>
             </Select>
           </FormControl>
         </Container>
-        <Box width={"100%"} display="flex" justifyContent="center">
-          <Box mx={4} width={"70%"}>
+  
+        {/* Grid & Cards */}
+        <Box display="flex" justifyContent="center">
+          <Box width={"80%"} mx={4}>
             {loading ? (
               <CircularProgress />
             ) : filteredUsers.length > 0 ? (
@@ -248,28 +275,36 @@ export default function Dashboard() {
                   <Grid item xs={12} sm={6} md={4} key={user.id}>
                     <Card
                       onClick={() => handleOpenProfile(user)}
-                      style={{ cursor: "pointer" }}
+                      sx={{
+                        cursor: "pointer",
+                        transition: "transform 0.2s ease-in-out",
+                        "&:hover": { transform: "scale(1.05)", boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)" },
+                        boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.1)",
+                        borderRadius: "15px",
+                      }}
                     >
                       <CardContent>
                         <Box display="flex" alignItems="center" mb={2}>
                           <Avatar
                             src={user.photoURL}
                             alt={user.name}
-                            sx={{ mr: 2 }}
+                            sx={{ mr: 2, width: 60, height: 60, border: "2px solid #4caf50" }}
                           />
-                          <Typography variant="h6">{user.name}</Typography>
+                          <Typography variant="h6" sx={{ fontWeight: "bold", color: "#2b3a42" }}>
+                            {user.name}
+                          </Typography>
                         </Box>
                         <Box mb={2}>
-                          <GitHubIcon sx={{ mr: 1 }} />
-                          GitHub
+                          <GitHubIcon sx={{ mr: 1, color: "#333" }} />
+                          <Typography component="span">GitHub</Typography>
                         </Box>
                         <Box mb={2}>
-                          <LinkedInIcon sx={{ mr: 1 }} />
-                          LinkedIn
+                          <LinkedInIcon sx={{ mr: 1, color: "#0a66c2" }} />
+                          <Typography component="span">LinkedIn</Typography>
                         </Box>
                         <Box mb={2}>
-                          <DescriptionIcon sx={{ mr: 1 }} />
-                          Resume
+                          <DescriptionIcon sx={{ mr: 1, color: "#757575" }} />
+                          <Typography component="span">Resume</Typography>
                         </Box>
                         <Box>
                           {user.skills &&
@@ -279,7 +314,13 @@ export default function Dashboard() {
                                 <Chip
                                   key={index}
                                   label={skill}
-                                  sx={{ mr: 1, mb: 1 }}
+                                  sx={{
+                                    mr: 1,
+                                    mb: 1,
+                                    backgroundColor: "#e0f7fa",
+                                    color: "#00796b",
+                                    fontWeight: "bold",
+                                  }}
                                 />
                               ))}
                         </Box>
@@ -292,7 +333,8 @@ export default function Dashboard() {
               <Typography>No users found.</Typography>
             )}
           </Box>
-
+  
+          {/* Profile Dialog */}
           <ProfileDialog
             open={openDialog}
             onClose={handleCloseDialog}
@@ -302,5 +344,7 @@ export default function Dashboard() {
       </Box>
     </>
   );
+  
 }
+
 

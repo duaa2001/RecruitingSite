@@ -112,7 +112,9 @@ export default function MembershipsPage() {
               Featured profile for employers
             </Typography>
             <Typography>Verified badge</Typography>
-            <Typography>COMING SOON...</Typography>
+            <Typography sx={{ fontWeight: "bold", color: "#2b4162", marginTop: "2rem" }}>
+              COMING SOON...
+            </Typography>
           </Box>
         </Box>
       </Box>
