@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Box, Typography, Container, CssBaseline } from "@mui/material";
@@ -22,9 +21,10 @@ export default function MembershipsPage() {
         <Box display="flex" flexDirection="column" textAlign="center">
           <Typography
             sx={{
-              textshadow: "1px 1px 2px black",
+              textShadow: "1px 1px 2px black",
               color: "white",
               fontSize: "4rem",
+              fontWeight: "bold",
             }}
           >
             Membership Options
@@ -32,9 +32,10 @@ export default function MembershipsPage() {
 
           <Typography
             sx={{
-              textshadow: "1px 1px 2px black",
+              textShadow: "1px 1px 2px black",
               color: "white",
-              fontSize: "1rem",
+              fontSize: "1.2rem",
+              marginTop: "1rem",
             }}
           >
             All memberships include full access to our services and features.
@@ -50,60 +51,72 @@ export default function MembershipsPage() {
             width: "100%",
           }}
         >
+          {/* Free Tier */}
           <Box
             sx={{
-              width: "20%",
+              width: "25%",
               height: "450px",
-              backgroundColor: "red",
+              backgroundColor: "#f0f4f8", // Light blue-gray
               padding: "3rem",
               borderRadius: "20px",
               textAlign: "center",
+              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
             }}
           >
-            <Typography sx={{ fontSize: "2rem", marginBottom: "1rem" }}>
-              Free/Basic
+            <Typography
+              sx={{
+                fontSize: "2rem",
+                marginBottom: "1rem",
+                color: "#2b4162",
+                fontWeight: "bold",
+              }}
+            >
+              Free Tier
             </Typography>
-            <p>Upload up to 5 projects </p>
-            <p> 5 skill tags</p>
+            <Typography sx={{ marginBottom: "0.5rem" }}>
+              Upload up to 3 projects
+            </Typography>
+            <Typography sx={{ marginBottom: "0.5rem" }}>5 skill tags</Typography>
+            <Typography>Basic profile visibility</Typography>
           </Box>
 
+          {/* Premium Tier */}
           <Box
             sx={{
-              width: "20%",
+              width: "25%",
               height: "450px",
-              backgroundColor: "red",
+              backgroundColor: "#ff9999", // Light orange
               padding: "3rem",
               borderRadius: "20px",
               textAlign: "center",
+              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
             }}
           >
-            <Typography sx={{ fontSize: "2rem", marginBottom: "1rem" }}>
-              Plus
-            </Typography>
-            <p>Upload up to 20 projects</p>
-            <p>10 skill tags</p>
-          </Box>
-
-          <Box
-            sx={{
-              width: "20%",
-              height: "450px",
-              backgroundColor: "red",
-              padding: "3rem",
-              borderRadius: "20px",
-              textAlign: "center",
-            }}
-          >
-            <Typography sx={{ fontSize: "2rem", marginBottom: "1rem" }}>
+            <Typography
+              sx={{
+                fontSize: "2rem",
+                marginBottom: "1rem",
+                color: "#2b4162",
+                fontWeight: "bold",
+              }}
+            >
               Premium
             </Typography>
-            <p>Upload unlimited projects</p>
-            <p> Unlimited skill tags</p>
-            <p>Verification badge</p>
+            <Typography sx={{ marginBottom: "0.5rem" }}>
+              Upload unlimited projects
+            </Typography>
+            <Typography sx={{ marginBottom: "0.5rem" }}>
+              Unlimited skill tags
+            </Typography>
+            <Typography sx={{ marginBottom: "0.5rem" }}>
+              Featured profile for employers
+            </Typography>
+            <Typography>Verified badge</Typography>
           </Box>
         </Box>
       </Box>
     </>
   );
 }
+
 
