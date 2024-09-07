@@ -122,8 +122,8 @@ export default function Dashboard() {
     setOpenDialog(false);
   };
 
-  const handleOpenChatbot = () => setOpenChatbot(true);
-  const handleCloseChatbot = () => setOpenChatbot(false);
+  // const handleOpenChatbot = () => setOpenChatbot(true);
+  // const handleCloseChatbot = () => setOpenChatbot(false);
 
 
   if (loading) {
@@ -201,18 +201,6 @@ export default function Dashboard() {
 
           <HeadlineTicker headlines={headlines} />
 
-          <Box sx={{ mt: 4 }}>
-            <Typography variant="h5" gutterBottom>
-              Chat Support
-            </Typography>
-            <Button variant="contained" onClick={handleOpenChatbot}>
-              Open Chatbot
-            </Button>
-          </Box>
-
-          <Dialog open={openChatbot} onClose={handleCloseChatbot} fullWidth maxWidth="md">
-            <Chatbot />
-          </Dialog>
 
           {/* Search Input */}
           <Box display="flex" sx={{ mt: 2, mb: 2 }}>
