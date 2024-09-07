@@ -43,7 +43,7 @@ export default function Home() {
           <Toolbar>
             <Link href="/" underline="none" color="inherit">
               <Typography variant="h5" component="div" sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', color: '#333' }}>
-                <WorkIcon sx={{ mr: 1 }} />
+                <WorkIcon sx={{ mr: 1, color: '#28a745' }} />  {/* Green accent for icon */}
                 TechMarket
               </Typography>
             </Link>
@@ -52,20 +52,20 @@ export default function Home() {
               <>
                 <Button 
                   color="inherit" 
-                  startIcon={<DashboardIcon />} 
+                  startIcon={<DashboardIcon sx={{ color: '#28a745' }} />}  
                   onClick={() => router.push('/dashboard')}
                   sx={{ mr: 2, fontSize: '1rem', color: '#333' }}
                 >
                   Dashboard
                 </Button>
                 <IconButton color="inherit" onClick={handleSignOut} sx={{ color: '#333' }}>
-                  <LogoutIcon />
+                  <LogoutIcon sx={{ color: '#28a745' }} />  {/* Green logout icon */}
                 </IconButton>
               </>
             ) : (
               <>
                 <Button color="inherit" href="/signin" sx={{ color: '#333' }}>Sign In</Button>
-                <Button color="inherit" href="/signup" sx={{ color: '#333' }}>Sign Up</Button>
+                <Button color="inherit" href="/signup" sx={{ color: '#28a745' }}>Sign Up</Button>  {/* Green accent for sign up button */}
               </>
             )}
           </Toolbar>
@@ -74,8 +74,8 @@ export default function Home() {
 
       {/* Hero Section */}
       <Box sx={{
-        backgroundColor: '#282c34',
-        color: '#fff',
+        backgroundColor: '#333',  // Neutral dark gray background
+        color: '#28a745',         // Green text
         py: 8,
         textAlign: 'center',
         display: 'flex',
@@ -83,18 +83,18 @@ export default function Home() {
         alignItems: 'center',
       }}>
         <Container>
-          <Typography variant="h2" className="title" sx={{ fontWeight: 'bold', mb: 2 }}>
+          <Typography variant="h2" className="title" sx={{ fontWeight: 'bold', mb: 2, color: '#28a745' }}>  {/* Green title */}
             Welcome to the Tech Marketplace!
           </Typography>
-          <Typography variant="body1" className="subtitle" sx={{ fontSize: '1.2rem', mb: 4 }}>
+          <Typography variant="body1" className="subtitle" sx={{ fontSize: '1.2rem', mb: 4, color: '#28a745' }}>  {/* Green subtitle */}
             Make your Profile. Connect with others. Explore.
           </Typography>
           <Button variant="contained" className="button" onClick={handleGetStarted} sx={{
-            backgroundColor: '#fff',
-            color: '#007bff',
+            backgroundColor: '#28a745',   // Green button for accent
+            color: '#fff',
             padding: '12px 24px',
             fontSize: '1.1rem',
-            "&:hover": { backgroundColor: '#f0f0f0' }
+            "&:hover": { backgroundColor: '#218838' }  // Darker green hover effect
           }}>
             Get Started
           </Button>
@@ -116,7 +116,7 @@ export default function Home() {
             <Grid item xs={12} md={4}>
               <Card elevation={5} sx={{ textAlign: 'center', padding: '20px' }}>
                 <CardContent>
-                  <Avatar sx={{ mb: 2, backgroundColor: '#007bff' }}>
+                  <Avatar sx={{ mb: 2, backgroundColor: '#28a745' }}> {/* Green accent for avatar */}
                     <GroupIcon />
                   </Avatar>
                   <Typography variant="h5" component="div" gutterBottom>
@@ -133,7 +133,7 @@ export default function Home() {
             <Grid item xs={12} md={4}>
               <Card elevation={5} sx={{ textAlign: 'center', padding: '20px' }}>
                 <CardContent>
-                  <Avatar sx={{ mb: 2, backgroundColor: '#007bff' }}>
+                  <Avatar sx={{ mb: 2, backgroundColor: '#28a745' }}> {/* Green accent for avatar */}
                     <TrendingUpIcon />
                   </Avatar>
                   <Typography variant="h5" component="div" gutterBottom>
@@ -150,7 +150,7 @@ export default function Home() {
             <Grid item xs={12} md={4}>
               <Card elevation={5} sx={{ textAlign: 'center', padding: '20px' }}>
                 <CardContent>
-                  <Avatar sx={{ mb: 2, backgroundColor: '#007bff' }}>
+                  <Avatar sx={{ mb: 2, backgroundColor: '#28a745' }}> {/* Green accent for avatar */}
                     <EmojiObjectsIcon />
                   </Avatar>
                   <Typography variant="h5" component="div" gutterBottom>
@@ -180,7 +180,7 @@ export default function Home() {
               <Grid item xs={12} md={4} key={feature.title}>
                 <Card elevation={4} sx={{ textAlign: 'center', padding: '20px' }}>
                   <CardContent>
-                    <Avatar sx={{ mb: 2, backgroundColor: '#007bff' }}>
+                    <Avatar sx={{ mb: 2, backgroundColor: '#28a745' }}> {/* Green accent for icons */}
                       {feature.icon}
                     </Avatar>
                     <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
