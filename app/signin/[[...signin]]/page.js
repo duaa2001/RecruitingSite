@@ -52,7 +52,7 @@ export default function SignInPage() {
                   "&:hover": { transition: ".75s", backgroundColor: "gray" },
                 }}
               >
-                About US
+                FAQ
               </Button>
             </Link>
 

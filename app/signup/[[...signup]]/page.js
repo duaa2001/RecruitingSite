@@ -75,7 +75,7 @@ export default function SignUpPage() {
                   "&:hover": { transition: ".75s", backgroundColor: "gray" },
                 }}
               >
-                About Us
+                FAQ
               </Button>
             </Link>
           </Box>
