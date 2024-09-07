@@ -85,7 +85,7 @@ export default function MembershipsPage() {
             sx={{
               width: "25%",
               height: "450px",
-              backgroundColor: "#ff9999", // Light orange
+              backgroundColor: "#ff9999", 
               padding: "3rem",
               borderRadius: "20px",
               textAlign: "center",
@@ -112,6 +112,7 @@ export default function MembershipsPage() {
               Featured profile for employers
             </Typography>
             <Typography>Verified badge</Typography>
+            <Typography>COMING SOON...</Typography>
           </Box>
         </Box>
       </Box>
