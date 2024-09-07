@@ -6,7 +6,7 @@ export default function ChatBot({ initialMessage, profile }) {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content: `Hi, I'm the TechMarket support agent. How can I assist you today?`,
+      content: `Hi, I'm the TechMarket support agent. How can I assist you today regarding ${profile?.name || 'this profile'}?`, 
     },
   ]);
 
