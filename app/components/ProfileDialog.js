@@ -259,26 +259,26 @@ export default function ProfileDialog({ open, onClose, profile }) {
         </Tooltip>
 
         {/* Profile Content */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3, mt: 5 }}>
-          <Avatar src={profile.photoURL} alt={profile.name} sx={{ width: 100, height: 100, mb: 2, border: '2px solid green' }} />
-          <Typography variant="h4" color="green">{profile.name}</Typography>
+        <Box sx={{ display: 'flex', flexDirection: isMobile?'row':'column', alignItems:'center', mb: isMobile?1:3, mt: 5 }}>
+          <Avatar src={profile.photoURL} alt={profile.name} sx={{ width: isMobile?50:100, height: isMobile?50:100, mb: 2, mr: isMobile?3:0, border: '2px solid green' }} />
+          <Typography variant={isMobile?"h5":"h4"} align='center' color="green">{profile.name}</Typography>
         </Box>
 
         <Typography variant="h6" gutterBottom align='center' color="green">Bio</Typography>
         <Typography paragraph align='center'>{profile.bio}</Typography>
 
         {/* Links */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-around', mb: 3 }}>
+        <Box sx={{ display: 'flex', flexDirection: isMobile?'column':'row',alignItems:'center', justifyContent: 'space-around', mb: 3 }}>
           <Link href={profile.github} target="_blank" rel="noopener noreferrer" sx={{ display: 'flex', alignItems: 'center', color: 'green' }}>
-            <GitHubIcon sx={{ mr: 1 }} />
+            <GitHubIcon sx={{ mr: 1,mb:1 }} />
             GitHub
           </Link>
           <Link href={profile.linkedin} target="_blank" rel="noopener noreferrer" sx={{ display: 'flex', alignItems: 'center', color: 'green' }}>
-            <LinkedInIcon sx={{ mr: 1 }} />
+            <LinkedInIcon sx={{ mr: 1,mb:1 }} />
             LinkedIn
           </Link>
           <Link href={profile.resume} target="_blank" rel="noopener noreferrer" sx={{ display: 'flex', alignItems: 'center', color: 'green' }}>
-            <DescriptionIcon sx={{ mr: 1 }} />
+            <DescriptionIcon sx={{ mr: 1,mb:1 }} />
             Resume
           </Link>
         </Box>
