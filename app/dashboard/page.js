@@ -179,7 +179,7 @@ export default function Dashboard() {
                     "&:hover": { backgroundColor: "#388e3c" },
                   }}
                 >
-                  Create Profile
+                  Make Profile
                 </Button>
               )}
               <IconButton onClick={handleSignOut} sx={{ color: "#fff" }}>
