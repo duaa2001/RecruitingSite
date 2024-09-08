@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   FormControl,
@@ -44,7 +45,7 @@ import ProfileDialog from "../components/ProfileDialog";
 
 export default function Dashboard() {
   const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState(users);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [educationFilter, setEducationFilter] = useState("");
   const [loading, setLoading] = useState(true);
   const { user, isLoaded, isSignedIn } = useUser();
@@ -65,7 +66,9 @@ export default function Dashboard() {
           id: doc.id,
           ...doc.data(),
         }));
-        setUsers(userList);
+        // Sort users by name in ascending order
+        const sortedUsers = userList.sort((a, b) => a.name.localeCompare(b.name));
+        setUsers(sortedUsers);
       } catch (error) {
         console.error("Error fetching users:", error);
       } finally {
@@ -99,8 +102,22 @@ export default function Dashboard() {
   }, [isSignedIn, user]);
 
   useEffect(() => {
-    setFilteredUsers(users);
-  }, [users]);
+    // Real-time search function
+    const filterUsers = () => {
+      const filtered = users.filter((user) => {
+        const nameMatch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
+        const skillsMatch = Array.isArray(user.skills) &&
+          user.skills.some((skill) => skill.toLowerCase().includes(searchTerm.toLowerCase()));
+        const degreeMatch = user.degree && user.degree.toLowerCase().includes(searchTerm.toLowerCase());
+        const educationMatch = educationFilter === "" || (user.degree && user.degree === educationFilter);
+
+        return (nameMatch || skillsMatch || degreeMatch) && educationMatch;
+      });
+      setFilteredUsers(filtered);
+    };
+
+    filterUsers();
+  }, [users, searchTerm, educationFilter]);
 
   const handleSignOut = async () => {
     try {
@@ -120,28 +137,10 @@ export default function Dashboard() {
     setOpenDialog(false);
   };
 
-  const handleSearch = () => {
-    const filtered = users.filter((user) => {
-      const nameMatch = user.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
-      const skillsMatch =
-        Array.isArray(user.skills) &&
-        user.skills.some((skill) =>
-          skill.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      const educationMatch =
-        educationFilter === "" || user.education === educationFilter;
-
-      return (nameMatch || skillsMatch) && educationMatch;
-    });
-    setFilteredUsers(filtered);
-  };
-
   return (
     <>
       <Box className="Container" sx={{ backgroundColor: "linear-gradient(to right, #f0f4f8, #f7f7f7)", minHeight: "100vh", paddingBottom: "2rem" }}>
-        {/* Enhanced AppBar */}
+        {/* AppBar */}
         <AppBar position="static" sx={{ backgroundColor: "#2b3a42", color: "#fff", boxShadow: "none" }}>
           <Container>
             <Toolbar>
@@ -182,14 +181,13 @@ export default function Dashboard() {
                 </Button>
               )}
               <IconButton onClick={handleSignOut} sx={{ color: "#fff" }}>
-              <LogoutIcon sx={{ color: '#28a745' }} />
+                <LogoutIcon sx={{ color: '#28a745' }} />
               </IconButton>
             </Toolbar>
           </Container>
         </AppBar>
   
         <Container sx={{ mt: 4 }}>
-          {/* Enhanced Typography */}
           <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold", color: "#2b3a42" }}>
             Tech Professionals
           </Typography>
@@ -199,7 +197,7 @@ export default function Dashboard() {
           {/* Search Input */}
           <Box display="flex" sx={{ mt: 3, mb: 4 }}>
             <TextField
-              label="Search profiles by name or skill"
+              label="Search profiles by name, skill, or degree"
               variant="outlined"
               size="small"
               fullWidth
@@ -220,20 +218,6 @@ export default function Dashboard() {
                 },
               }}
             />
-            <Button
-              variant="contained"
-              onClick={handleSearch}
-              sx={{
-                backgroundColor: "#2196f3",
-                color: "#fff",
-                borderRadius: "30px",
-                fontWeight: "bold",
-                padding: "6px 20px",
-                "&:hover": { backgroundColor: "#1976d2" },
-              }}
-            >
-              Search
-            </Button>
           </Box>
   
           <FormControl sx={{ mr: 2, minWidth: 150, mb: 4 }}>
@@ -257,8 +241,8 @@ export default function Dashboard() {
               }}
             >
               <MenuItem value="">All</MenuItem>
-              <MenuItem value="Bachelor">Bachelor&apos;s</MenuItem>
-              <MenuItem value="Master">Master&apos;s</MenuItem>
+              <MenuItem value="Bachelor">Bachelor&rsquo;s</MenuItem>
+              <MenuItem value="Master">Master&rsquo;s</MenuItem>
               <MenuItem value="PhD">PhD</MenuItem>
             </Select>
           </FormControl>
@@ -344,7 +328,4 @@ export default function Dashboard() {
       </Box>
     </>
   );
-  
 }
-
-
