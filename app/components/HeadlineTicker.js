@@ -1,20 +1,21 @@
 // components/HeadlineTicker.js
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography,useMediaQuery } from '@mui/material';
 
 const HeadlineTicker = ({ headlines }) => {
+  const isMobile = useMediaQuery("(max-width:600px)");
   return (
     <Box
       sx={{
         backgroundColor: '#fb8b24',
         color: '#333',
-        padding: '10px',
+        padding: isMobile?'6px':'10px',
         position: 'relative',
         overflow: 'hidden',
         fontWeight: 'bold',
         fontSize: '1.2rem',
         whiteSpace: 'nowrap',
-        borderRadius: '6px',
+        borderRadius: '10px',
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
       }}
     >

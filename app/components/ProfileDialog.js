@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Dialog, DialogContent, Typography, Avatar, Link, Box, Chip, IconButton,Button, Tooltip } from '@mui/material';
+import { Dialog, DialogContent, Typography, Avatar, Link, Box, Chip, IconButton, Button, Tooltip, useMediaQuery } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -13,6 +13,7 @@ export default function ProfileDialog({ open, onClose, profile }) {
   const [message, setMessage] = useState("");
   const messagesEndRef = useRef(null);
   const dialogContentRef = useRef(null);
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
     if (isChatOpen) {
@@ -92,7 +93,7 @@ export default function ProfileDialog({ open, onClose, profile }) {
       fullWidth
       PaperProps={{
         sx: {
-          width: isChatOpen ? '90%' : '80%',
+          width: isMobile ? '100%' : '90%',
           height: '90vh',
           maxHeight: '90vh',
           m: 'auto',
@@ -105,24 +106,35 @@ export default function ProfileDialog({ open, onClose, profile }) {
       {isChatOpen && (
         <Box
           sx={{
-            width: '33%',
+            width: isMobile ? '100%' : '33%',
             height: '100%',
             bgcolor: 'white',
             borderRight: '1px solid #E0E0E0',
             display: 'flex',
             flexDirection: 'column',
+            position: isMobile ? 'absolute' : 'relative',
+            zIndex: isMobile ? 1 : 'auto',
+            left: 0,
+            top: 0,
           }}
         >
-          <Typography
-            variant="h6"
-            sx={{
-              bgcolor: '#4CAF50',
-              color: 'white',
-              p: 2,
-            }}
-          >
-             Ask about <span style={{ fontWeight: 'bold' }}>{profile.name}</span>
-          </Typography>
+          <Box sx={{
+            bgcolor: '#4CAF50',
+            color: 'white',
+            p: 2,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+            <Typography variant="h6">
+              Ask about <span style={{ fontWeight: 'bold' }}>{profile.name}</span>
+            </Typography>
+            {isMobile && (
+              <IconButton onClick={toggleChat} sx={{ color: 'white' }}>
+                <CloseIcon />
+              </IconButton>
+            )}
+          </Box>
           <Box
             sx={{
               flexGrow: 1,
@@ -156,6 +168,7 @@ export default function ProfileDialog({ open, onClose, profile }) {
             ))}
             <div ref={messagesEndRef} />
           </Box>
+          
           <Box sx={{ p: 2, borderTop: '1px solid #E8F5E9' }}>
             <form onSubmit={(e) => { e.preventDefault(); sendMessage(); }}>
               <Box sx={{ display: 'flex' }}>
@@ -191,15 +204,15 @@ export default function ProfileDialog({ open, onClose, profile }) {
         </Box>
       )}
         
-        {/* Profile Dialog */}
+      {/* Profile Dialog */}
       <DialogContent 
         ref={dialogContentRef}
         sx={{ 
           bgcolor: 'white', 
           color: 'black', 
           position: 'relative',
-          width: isChatOpen ? 'calc(67% - 1px)' : '100%',
-          borderRight: isChatOpen ? '1px solid #E0E0E0' : 'none',
+          width: isChatOpen && !isMobile ? 'calc(67% - 1px)' : '100%',
+          borderRight: isChatOpen && !isMobile ? '1px solid #E0E0E0' : 'none',
           transition: 'width 0.3s ease-in-out',
           overflowY: 'auto',
         }}
@@ -241,7 +254,7 @@ export default function ProfileDialog({ open, onClose, profile }) {
             }}
           >
             <ChatIcon />
-            {" Chat  With AI"}
+            {" Chat With AI"}
           </Button>
         </Tooltip>
 
@@ -318,8 +331,6 @@ export default function ProfileDialog({ open, onClose, profile }) {
           ))}
         </Box>
       </DialogContent>
-
-      
     </Dialog>
   );
 }

@@ -23,6 +23,7 @@ import {
   Button,
   CircularProgress,
   IconButton,
+  useMediaQuery,
 } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
@@ -56,6 +57,7 @@ export default function Dashboard() {
   const { signOut } = useClerk();
   const [headlines, setHeadlines] = useState([]);
   const router = useRouter();
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -145,7 +147,7 @@ export default function Dashboard() {
           <Container>
             <Toolbar>
               <Link href="/" underline="none" color="inherit">
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1, display: "flex", alignItems: "center", fontWeight: 700 }}>
+                <Typography  variant= {isMobile?"h7":"h6"} component="div" sx={{ flexGrow: 1, display: "flex", alignItems: "center", fontWeight: 700 }}>
                   <WorkIcon sx={{ mr: 1, color: "#4caf50" }} />
                   TechMarket
                 </Typography>
@@ -188,7 +190,7 @@ export default function Dashboard() {
         </AppBar>
   
         <Container sx={{ mt: 4 }}>
-          <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold", color: "#2b3a42" }}>
+          <Typography variant={isMobile?"h5":"h4"} gutterBottom sx={{ fontWeight: "bold", color: "#2b3a42" }}>
             Tech Professionals
           </Typography>
   
@@ -219,7 +221,7 @@ export default function Dashboard() {
               }}
             />
           </Box>
-  
+{/*   
           <FormControl sx={{ mr: 2, minWidth: 150, mb: 4 }}>
             <InputLabel>Education</InputLabel>
             <Select
@@ -245,7 +247,7 @@ export default function Dashboard() {
               <MenuItem value="Master">Master&rsquo;s</MenuItem>
               <MenuItem value="PhD">PhD</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
         </Container>
   
         {/* Grid & Cards */}
@@ -268,32 +270,32 @@ export default function Dashboard() {
                       }}
                     >
                       <CardContent>
-                        <Box display="flex" alignItems="center" mb={2}>
+                        <Box display="flex" alignItems="center" mb={isMobile?1:2}>
                           <Avatar
                             src={user.photoURL}
                             alt={user.name}
-                            sx={{ mr: 2, width: 60, height: 60, border: "2px solid #4caf50" }}
+                            sx={{ mr: 2, width: isMobile?40:60, height: isMobile?40:60, border: "2px solid #4caf50" }}
                           />
-                          <Typography variant="h6" sx={{ fontWeight: "bold", color: "#2b3a42" }}>
+                          <Typography variant={isMobile?"h7":"h6"} sx={{ fontWeight: "bold", color: "#2b3a42" }}>
                             {user.name}
                           </Typography>
                         </Box>
-                        <Box mb={2}>
+                        <Box mb={isMobile?1:2}>
                           <GitHubIcon sx={{ mr: 1, color: "#333" }} />
                           <Typography component="span">GitHub</Typography>
                         </Box>
-                        <Box mb={2}>
+                        <Box mb={isMobile?1:2}>
                           <LinkedInIcon sx={{ mr: 1, color: "#0a66c2" }} />
                           <Typography component="span">LinkedIn</Typography>
                         </Box>
-                        <Box mb={2}>
+                        <Box mb={isMobile?1:2}>
                           <DescriptionIcon sx={{ mr: 1, color: "#757575" }} />
                           <Typography component="span">Resume</Typography>
                         </Box>
                         <Box>
                           {user.skills &&
                             user.skills
-                              .slice(0, 8)
+                              .slice(isMobile?(0, 2):(0, 0))
                               .map((skill, index) => (
                                 <Chip
                                   key={index}
