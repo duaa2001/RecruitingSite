@@ -1,6 +1,9 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { useUser, useClerk } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 import { 
   AppBar, Toolbar, Typography, Button, Box, Card, CardContent, 
   IconButton, Grid, Container, Avatar, Link, Menu, MenuItem, useMediaQuery
@@ -19,20 +22,64 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useRouter } from 'next/navigation';
-import { useUser, useClerk } from '@clerk/nextjs';
 
 const theme = createTheme({
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 960,
-      lg: 1280,
-      xl: 1920,
+  palette: {
+    primary: {
+      main: '#4caf50',
+    },
+    secondary: {
+      main: '#333333',
+    },
+    background: {
+      default: '#f4f4f4',
+    },
+  },
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    h1: {
+      fontWeight: 700,
+    },
+    h2: {
+      fontWeight: 600,
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 30,
+          textTransform: 'none',
+          fontWeight: 600,
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+          boxShadow: '0 4px 20px 0 rgba(0,0,0,0.12)',
+        },
+      },
     },
   },
 });
+
+const FeatureCard = ({ icon, title, description }) => (
+  <Card component={motion.div} whileHover={{ y: -10 }} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+      <Avatar sx={{ width: 60, height: 60, mb: 2, backgroundColor: 'primary.main' }}>
+        {icon}
+      </Avatar>
+      <Typography variant="h5" component="h3" gutterBottom fontWeight="bold">
+        {title}
+      </Typography>
+      <Typography variant="body1" color="text.secondary">
+        {description}
+      </Typography>
+    </CardContent>
+  </Card>
+);
 
 export default function Home() {
   const { isSignedIn } = useUser();
@@ -64,14 +111,13 @@ export default function Home() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box className="container" sx={{ backgroundColor: "#f4f4f4", minHeight: "100vh" }}>
-        {/* AppBar Section */}
-        <AppBar position="static" color="transparent" elevation={4} sx={{ backgroundColor: "#fff" }}>
+      <Box sx={{ backgroundColor: 'background.default', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <AppBar position="sticky" color="transparent" elevation={0} sx={{ backdropFilter: 'blur(20px)', backgroundColor: 'rgba(255,255,255,0.8)' }}>
           <Container>
             <Toolbar>
               <Link href="/" underline="none" color="inherit">
-                <Typography variant="h5" component="div" sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', color: '#333' }}>
-                  <WorkIcon sx={{ mr: 1, color: '#4caf50' }} />
+                <Typography variant="h5" component="div" sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', color: 'primary.main', fontWeight: 'bold' }}>
+                  <WorkIcon sx={{ mr: 1, fontSize: 32 }} />
                   TechMarket
                 </Typography>
               </Link>
@@ -88,17 +134,7 @@ export default function Home() {
                     <MenuIcon />
                   </IconButton>
                   <Menu
-                    id="menu-appbar"
                     anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
@@ -119,141 +155,158 @@ export default function Home() {
                 isSignedIn ? (
                   <>
                     <Button 
-                      color="inherit" 
-                      startIcon={<DashboardIcon sx={{ color: '#4caf50' }} />}  
+                      color="primary" 
+                      variant="contained"
+                      startIcon={<DashboardIcon />}  
                       onClick={() => router.push('/dashboard')}
-                      sx={{ mr: 2, fontSize: '1rem', color: '#333' }}
+                      sx={{ mr: 2 }}
                     >
                       Dashboard
                     </Button>
-                    <IconButton color="inherit" onClick={handleSignOut} sx={{ color: '#333' }}>
-                      <LogoutIcon sx={{ color: '#4caf50' }} />
+                    <IconButton color="primary" onClick={handleSignOut}>
+                      <LogoutIcon />
                     </IconButton>
                   </>
                 ) : (
                   <>
-                    <Button color="inherit" href="/signin" sx={{ color: '#333' }}>Sign In</Button>
-                    <Button color="inherit" href="/signup" sx={{ color: '#4caf50' }}>Sign Up</Button>
+                    <Button color="primary" variant="outlined" href="/signin" sx={{ mr: 2 }}>Sign In</Button>
+                    <Button color="primary" variant="contained" href="/signup">Sign Up</Button>
                   </>
                 )
               )}
             </Toolbar>
           </Container>
         </AppBar>
-    
-        {/* Hero Section */}
-        <Box sx={{
-          backgroundColor: '#333',
-          color: '#4caf50',
-          py: { xs: 4, md: 8 },
-          textAlign: 'center',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}>
+
+        <Box component="main" sx={{ flexGrow: 1 }}>
           <Container>
-            <Typography variant="h2" className="title" sx={{ fontWeight: 'bold', mb: 2, color: '#4caf50', fontSize: { xs: '2rem', md: '3rem' } }}>
-              Welcome to the Tech Marketplace!
-            </Typography>
-            <Typography variant="body1" className="subtitle" sx={{ fontSize: { xs: '1rem', md: '1.2rem' }, mb: 4, color: '#4caf50' }}>
-              Make your Profile. Connect with others. Explore.
-            </Typography>
-            <Button variant="contained" className="button" onClick={handleGetStarted} sx={{
-              backgroundColor: '#4caf50',
-              color: '#fff',
-              padding: '12px 24px',
-              fontSize: '1.1rem',
-              "&:hover": { backgroundColor: '#388e3c' }
-            }}>
-              Get Started
-            </Button>
-          </Container>
-        </Box>
-    
-        {/* About Section */}
-        <Box sx={{ py: { xs: 4, md: 8 }, backgroundColor: "#f9f9f9", textAlign: "center" }}>
-          <Container>
-            <Typography variant="h3" className="section-title" sx={{ fontWeight: 'bold', mb: 4, fontSize: { xs: '2rem', md: '2.5rem' } }}>
-              About Us
-            </Typography>
-            <Typography variant="body1" paragraph sx={{ mb: 6, color: '#666', fontSize: { xs: '1rem', md: '1.1rem' } }}>
-              Welcome to TechMarket, where innovation meets opportunity. We connect tech professionals 
-              with the companies that need them, creating a vibrant marketplace for talent and technology.
-            </Typography>
-            
-            <Grid container spacing={4}>
-              {[
-                { title: 'Our Mission', icon: <GroupIcon />, description: 'To empower tech professionals to find their ideal roles while helping companies discover the talent they need to thrive.' },
-                { title: 'Our Vision', icon: <TrendingUpIcon />, description: 'We envision a world where technology professionals can easily connect with opportunities that align with their skills and aspirations.' },
-                { title: 'Our Approach', icon: <EmojiObjectsIcon />, description: 'We leverage advanced matching algorithms and a user-friendly interface to ensure that both job seekers and employers find the best fit.' }
-              ].map((item) => (
-                <Grid item xs={12} md={4} key={item.title}>
-                  <Card elevation={5} sx={{ textAlign: 'center', padding: '20px', height: '100%' }}>
-                    <CardContent>
-                      <Avatar sx={{ mb: 2, backgroundColor: '#4caf50', margin: 'auto' }}>
-                        {item.icon}
-                      </Avatar>
-                      <Typography variant="h5" component="div" gutterBottom>
-                        {item.title}
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: '#777' }}>
-                        {item.description}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
-        </Box>
-    
-        {/* Features Section */}
-        <Box sx={{ py: { xs: 4, md: 8 }, backgroundColor: "#fff", textAlign: "center" }}>
-          <Container>
-            <Typography variant="h3" className="section-title" sx={{ fontWeight: 'bold', mb: 4, fontSize: { xs: '2rem', md: '2.5rem' } }}>Features</Typography>
-            <Grid container spacing={3}>
-              {[
-                { title: 'Profile Creation', icon: <PersonAddIcon />, description: 'Create a comprehensive profile showcasing your skills, experience, and projects.' },
-                { title: 'Advanced Job Search', icon: <SearchIcon />, description: 'Use our powerful search tools to find the perfect job match based on your preferences.' },
-                { title: 'Direct Messaging', icon: <MessageIcon />, description: 'Connect directly with employers and recruiters through our secure messaging system.' }
-              ].map((feature) => (
-                <Grid item xs={12} md={4} key={feature.title}>
-                  <Card elevation={4} sx={{ textAlign: 'center', padding: '20px', height: '100%' }}>
-                    <CardContent>
-                      <Avatar sx={{ mb: 2, backgroundColor: '#4caf50', margin: 'auto' }}>
-                        {feature.icon}
-                      </Avatar>
-                      <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
-                        {feature.title}
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: '#777' }}>
-                        {feature.description}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
-        </Box>
-    
-        {/* Footer */}
-        <Box component="footer" sx={{ py: 4, backgroundColor: '#333', color: '#fff', textAlign: 'center', mt: 'auto' }}>
-          <Container>
-            <Typography variant="body2">
-              © 2024 TechMarket. All rights reserved.
-            </Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-              <IconButton color="inherit" aria-label="GitHub" component="a" href="https://github.com" target="_blank">
-                <GitHubIcon />
-              </IconButton>
-              <IconButton color="inherit" aria-label="LinkedIn" component="a" href="https://linkedin.com" target="_blank">
-                <LinkedInIcon />
-              </IconButton>
-              <IconButton color="inherit" aria-label="Twitter" component="a" href="https://twitter.com" target="_blank">
-                <TwitterIcon />
-              </IconButton>
+            <Box component={motion.div} 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              sx={{ 
+                textAlign: 'center', 
+                py: { xs: 8, md: 12 },
+                backgroundImage:'url("https://picsum.photos/1200/600")',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                borderRadius: 4,
+                color: 'white',
+                position: 'relative',
+                overflow: 'hidden',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: 'rgba(0,0,0,0.5)',
+                }
+              }}
+            >
+              <Box sx={{ position: 'relative', zIndex: 1 }}>
+                <Typography variant="h1" component="h1" sx={{ mb: 2, fontSize: { xs: '2.5rem', md: '4rem' } }}>
+                  Welcome to the Tech Marketplace
+                </Typography>
+                <Typography variant="h5" sx={{ mb: 4, fontWeight: 'normal' }}>
+                  Make your Profile. Connect with others. Explore.
+                </Typography>
+                <Button 
+                  variant="contained" 
+                  size="large" 
+                  onClick={handleGetStarted}
+                  sx={{ 
+                    py: 1.5, 
+                    px: 4, 
+                    fontSize: '1.2rem',
+                  }}
+                >
+                  Get Started
+                </Button>
+              </Box>
             </Box>
+
+            <Box sx={{ py: { xs: 8, md: 12 } }}>
+              <Typography variant="h2" align="center" sx={{ mb: 6 }}>
+                Our Features
+              </Typography>
+              <Grid container spacing={4}>
+                {[
+                  { icon: <PersonAddIcon fontSize="large" />, title: 'Profile Creation', description: 'Create a comprehensive profile showcasing your skills, experience, and projects.' },
+                  { icon: <SearchIcon fontSize="large" />, title: 'AI Profile Analysis', description: 'Leverage our advanced AI chat to analyze your profile and receive personalized recommendations.' },
+                  { icon: <MessageIcon fontSize="large" />, title: 'Networking', description: 'Connect and search directly with users and engineers through our secure system.' },
+                ].map((feature, index) => (
+                  <Grid item xs={12} md={4} key={index}>
+                    <FeatureCard {...feature} />
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+
+            <Box sx={{ py: { xs: 8, md: 12 }, backgroundColor: 'background.paper', borderRadius: 4 }}>
+              <Container maxWidth="md">
+                <Typography variant="h2" align="center" sx={{ mb: 6 }}>
+                  About Us
+                </Typography>
+                <Typography variant="body1" paragraph align="center" sx={{ mb: 4 }}>
+                  TechMarket is where innovation meets opportunity. We connect tech professionals 
+                  with the companies that need them, creating a vibrant marketplace for talent and technology.
+                </Typography>
+                <Grid container spacing={4}>
+                  {[
+                    { icon: <GroupIcon />, title: 'Our Mission', description: 'To empower tech professionals to find their ideal roles while helping companies discover the talent they need to thrive.' },
+                    { icon: <TrendingUpIcon />, title: 'Our Vision', description: 'We envision a world where technology professionals can easily connect with opportunities that align with their skills and aspirations.' },
+                    { icon: <EmojiObjectsIcon />, title: 'Our Approach', description: 'We leverage advanced matching algorithms and a user-friendly interface to ensure that both job seekers and employers find the best fit.' }
+                  ].map((item, index) => (
+                    <Grid item xs={12} md={4} key={index}>
+                      <Box sx={{ textAlign: 'center' }}>
+                        <Avatar sx={{ width: 60, height: 60, mb: 2, mx: 'auto', backgroundColor: 'primary.main' }}>
+                          {item.icon}
+                        </Avatar>
+                        <Typography variant="h5" component="h3" gutterBottom>
+                          {item.title}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {item.description}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Container>
+            </Box>
+          </Container>
+        </Box>
+
+        <Box component="footer" sx={{ py: 4, backgroundColor: 'secondary.main', color: 'white', mt: 'auto' }}>
+          <Container>
+            <Grid container spacing={4} justifyContent="space-between" alignItems="center">
+              <Grid item xs={12} md={4}>
+                <Typography variant="h6" gutterBottom>
+                  TechMarket
+                </Typography>
+                <Typography variant="body2">
+                  Connecting talent with opportunity in the tech world.
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
+                <Typography variant="body2">
+                  © 2024 TechMarket. All rights reserved.
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={4} sx={{ display: 'flex', justifyContent: { xs: 'center', md: 'flex-end' } }}>
+                <IconButton color="inherit" aria-label="GitHub" component="a" href="https://github.com" target="_blank">
+                  <GitHubIcon />
+                </IconButton>
+                <IconButton color="inherit" aria-label="LinkedIn" component="a" href="https://linkedin.com" target="_blank">
+                  <LinkedInIcon />
+                </IconButton>
+                <IconButton color="inherit" aria-label="Twitter" component="a" href="https://twitter.com" target="_blank">
+                  <TwitterIcon />
+                </IconButton>
+              </Grid>
+            </Grid>
           </Container>
         </Box>
       </Box>
