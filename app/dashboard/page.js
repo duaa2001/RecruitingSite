@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   FormControl,
@@ -68,7 +67,6 @@ export default function Dashboard() {
           id: doc.id,
           ...doc.data(),
         }));
-        // Sort users by name in ascending order
         const sortedUsers = userList.sort((a, b) => a.name.localeCompare(b.name));
         setUsers(sortedUsers);
       } catch (error) {
@@ -104,7 +102,6 @@ export default function Dashboard() {
   }, [isSignedIn, user]);
 
   useEffect(() => {
-    // Real-time search function
     const filterUsers = () => {
       const filtered = users.filter((user) => {
         const nameMatch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -120,6 +117,10 @@ export default function Dashboard() {
 
     filterUsers();
   }, [users, searchTerm, educationFilter]);
+
+  const handleSearch = () => {
+    filterUsers();
+  };
 
   const handleSignOut = async () => {
     try {
@@ -142,12 +143,11 @@ export default function Dashboard() {
   return (
     <>
       <Box className="Container" sx={{ backgroundColor: "linear-gradient(to right, #f0f4f8, #f7f7f7)", minHeight: "100vh", paddingBottom: "2rem" }}>
-        {/* AppBar */}
         <AppBar position="static" sx={{ backgroundColor: "#2b3a42", color: "#fff", boxShadow: "none" }}>
           <Container>
             <Toolbar>
               <Link href="/" underline="none" color="inherit">
-                <Typography  variant= {isMobile?"h7":"h6"} component="div" sx={{ flexGrow: 1, display: "flex", alignItems: "center", fontWeight: 700 }}>
+                <Typography  variant={isMobile ? "h7" : "h6"} component="div" sx={{ flexGrow: 1, display: "flex", alignItems: "center", fontWeight: 700 }}>
                   <WorkIcon sx={{ mr: 1, color: "#4caf50" }} />
                   TechMarket
                 </Typography>
@@ -190,13 +190,12 @@ export default function Dashboard() {
         </AppBar>
   
         <Container sx={{ mt: 4 }}>
-          <Typography variant={isMobile?"h5":"h4"} gutterBottom sx={{ fontWeight: "bold", color: "#2b3a42" }}>
+          <Typography variant={isMobile ? "h5" : "h4"} gutterBottom sx={{ fontWeight: "bold", color: "#2b3a42" }}>
             Tech Professionals
           </Typography>
   
           <HeadlineTicker headlines={headlines} />
   
-          {/* Search Input */}
           <Box display="flex" sx={{ mt: 3, mb: 4 }}>
             <TextField
               label="Search profiles by name, skill, or degree"
@@ -220,37 +219,24 @@ export default function Dashboard() {
                 },
               }}
             />
-          </Box>
-{/*   
-          <FormControl sx={{ mr: 2, minWidth: 150, mb: 4 }}>
-            <InputLabel>Education</InputLabel>
-            <Select
-              value={educationFilter}
-              label="Education"
-              onChange={(e) => setEducationFilter(e.target.value)}
+            <Button 
+              variant="contained" 
+              color="primary" 
+              size="small" 
+              onClick={handleSearch} 
               sx={{
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#cfd8dc",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#90a4ae",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#4caf50",
-                  },
-                },
+                height: '40px',
+                backgroundColor: "#4caf50",
+                "&:hover": {
+                  backgroundColor: "#388e3c"
+                }
               }}
             >
-              <MenuItem value="">All</MenuItem>
-              <MenuItem value="Bachelor">Bachelor&rsquo;s</MenuItem>
-              <MenuItem value="Master">Master&rsquo;s</MenuItem>
-              <MenuItem value="PhD">PhD</MenuItem>
-            </Select>
-          </FormControl> */}
+              Search
+            </Button>
+          </Box>
         </Container>
   
-        {/* Grid & Cards */}
         <Box display="flex" justifyContent="center">
           <Box width={"80%"} mx={4}>
             {loading ? (
@@ -270,32 +256,32 @@ export default function Dashboard() {
                       }}
                     >
                       <CardContent>
-                        <Box display="flex" alignItems="center" mb={isMobile?1:2}>
+                        <Box display="flex" alignItems="center" mb={isMobile ? 1 : 2}>
                           <Avatar
                             src={user.photoURL}
                             alt={user.name}
-                            sx={{ mr: 2, width: isMobile?40:60, height: isMobile?40:60, border: "2px solid #4caf50" }}
+                            sx={{ mr: 2, width: isMobile ? 40 : 60, height: isMobile ? 40 : 60, border: "2px solid #4caf50" }}
                           />
-                          <Typography variant={isMobile?"h7":"h6"} sx={{ fontWeight: "bold", color: "#2b3a42" }}>
+                          <Typography variant={isMobile ? "h7" : "h6"} sx={{ fontWeight: "bold", color: "#2b3a42" }}>
                             {user.name}
                           </Typography>
                         </Box>
-                        <Box mb={isMobile?1:2}>
+                        <Box mb={isMobile ? 1 : 2}>
                           <GitHubIcon sx={{ mr: 1, color: "#333" }} />
                           <Typography component="span">GitHub</Typography>
                         </Box>
-                        <Box mb={isMobile?1:2}>
+                        <Box mb={isMobile ? 1 : 2}>
                           <LinkedInIcon sx={{ mr: 1, color: "#0a66c2" }} />
                           <Typography component="span">LinkedIn</Typography>
                         </Box>
-                        <Box mb={isMobile?1:2}>
+                        <Box mb={isMobile ? 1 : 2}>
                           <DescriptionIcon sx={{ mr: 1, color: "#757575" }} />
                           <Typography component="span">Resume</Typography>
                         </Box>
                         <Box>
                           {user.skills &&
                             user.skills
-                              .slice(isMobile?(0, 2):(0, 0))
+                              .slice(isMobile ? (0, 2) : (0, 0))
                               .map((skill, index) => (
                                 <Chip
                                   key={index}
@@ -320,7 +306,6 @@ export default function Dashboard() {
             )}
           </Box>
   
-          {/* Profile Dialog */}
           <ProfileDialog
             open={openDialog}
             onClose={handleCloseDialog}
