@@ -7,6 +7,11 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Tech Marketplace",
   description: "Connect | Explore | Hire",
+  icons: {
+    icon: [
+      { url: 'images/application.png', sizes: 'any', type: 'image/png' },
+    ],
+  },
 };
 
 export default function RootLayout({ children }) {

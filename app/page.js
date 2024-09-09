@@ -4,10 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useUser, useClerk } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import { 
-  AppBar, Toolbar, Typography, Button, Box, Card, CardContent, 
-  IconButton, Grid, Container, Avatar, Link, Menu, MenuItem, useMediaQuery
-} from "@mui/material";
+import { AppBar, Toolbar, Typography, Button, Box, Card, CardContent, IconButton, Grid, Container, Avatar, Link, Menu, MenuItem, useMediaQuery } from "@mui/material";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import WorkIcon from '@mui/icons-material/Work';
 import GroupIcon from '@mui/icons-material/Group';
