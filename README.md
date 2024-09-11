@@ -36,50 +36,55 @@ Tech Marketplace is a dynamic web application designed to connect tech professio
    git clone https://github.com/your-username/tech-marketplace.git
    cd tech-marketplace
 
-Install dependencies:
-bash
-npm install
+2. Install dependencies:
+    ```bash
+    npm install
 
-Set up environment variables:
-Create a .env.local file in the root directory and add necessary environment variables (e.g., Firebase config, Clerk public key).
-Run the development server:
-bash
-npm run dev
+3. Set up environment variables:
+    Create a .env.local file in the root directory and add necessary environment variables (e.g., Firebase config, Clerk public key).
+    Run the development server:
+    ```bash
+    npm run dev
 
-Open http://localhost:3000 with your browser to see the result.
+4. Open http://localhost:3000 with your browser to see the result.
 Additional Setup Notes
 If you encounter any unknown errors related to Firebase, run:
-bash
-npm install firebase
+    ```bash
+    npm install firebase
 
-To install Material-UI and its dependencies:
-bash
-npm install @mui/material @emotion/react @emotion/styled
+5. To install Material-UI and its dependencies:
+    ```bash
+    npm install @mui/material @emotion/react @emotion/styled
 
-Project Structure
+6. Project Structure
 app/: Contains the main application pages and components.
+
 components/: Reusable React components.
+
 public/: Static files like images and fonts.
+
 styles/: Global styles and CSS modules.
+
 firebase/: Firebase configuration and utility functions.
-Customization
+
+7. Customization
 You can start customizing the application by modifying app/page.js. The page auto-updates as you edit the file.
 This project uses next/font to automatically optimize and load Inter, a custom Google Font.
 Learn More
-To dive deeper into Next.js, explore these resources:
+
+8. To dive deeper into Next.js, explore these resources:
 Next.js Documentation - comprehensive guide to Next.js features and API.
 Learn Next.js - an interactive Next.js tutorial.
 Deployment
 The easiest way to deploy your Next.js app is to use the Vercel Platform from the creators of Next.js.
 Check out the Next.js deployment documentation for more details.
-Contributing
+
+9. Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
 License
 This project is licensed under the MIT License.
-text
+
 
 ### Key Changes:
 - The installation steps are now clearly numbered and organized under the **Installation** section.
 - The additional setup notes are still included but are clearly separated from the main installation steps.
-
-This should improve clarity and make it easier for users to follow the installation instructions. Feel free to adjust any part of the README to better fit your project's needs!
