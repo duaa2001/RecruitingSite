@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useUser, useClerk } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import { AppBar, Toolbar, Typography, Button, Box, Card, CardContent, IconButton, Grid, Container, Avatar, Link, Menu, MenuItem, useMediaQuery } from "@mui/material";
+import { AppBar, Toolbar, Typography, Button, Box, Card, CardContent, IconButton, Grid, Container, Avatar, Link, Menu, MenuItem, useMediaQuery, Divider } from "@mui/material";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import WorkIcon from '@mui/icons-material/Work';
 import GroupIcon from '@mui/icons-material/Group';
@@ -19,6 +19,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import MenuIcon from '@mui/icons-material/Menu';
+import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 
 const theme = createTheme({
   palette: {
@@ -222,6 +223,92 @@ export default function Home() {
                   Get Started
                 </Button>
               </Box>
+            </Box>
+
+            {/* New Video Spotlight Section */}
+            <Box 
+              component={motion.div}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              sx={{ 
+                py: { xs: 6, md: 8 }, 
+                mt: 4,
+                borderRadius: 4,
+                overflow: 'hidden',
+                backgroundColor: 'white',
+                boxShadow: '0 4px 20px 0 rgba(0,0,0,0.08)',
+              }}
+            >
+              <Container>
+                <Typography 
+                  variant="h2" 
+                  align="center" 
+                  sx={{ 
+                    mb: 4,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 2
+                  }}
+                >
+                  <VideoLibraryIcon sx={{ color: 'primary.main', fontSize: { xs: 30, md: 36 } }} />
+                  Featured Content
+                </Typography>
+                
+                <Grid container spacing={4} alignItems="center">
+                  <Grid item xs={12} md={6}>
+                    <Card 
+                      component={motion.div} 
+                      whileHover={{ scale: 1.02 }}
+                      transition={{ duration: 0.3 }}
+                      sx={{ 
+                        overflow: 'hidden',
+                        height: '100%',
+                      }}
+                    >
+                      <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+                        <Box sx={{ position: 'relative', pt: '56.25%' /* 16:9 aspect ratio */ }}>
+                          <iframe 
+                            src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7239347256406032384?compact=1" 
+                            style={{
+                              position: 'absolute',
+                              top: 0,
+                              left: 0,
+                              width: '100%',
+                              height: '100%',
+                              border: 0
+                            }}
+                            allowFullScreen
+                            title="TechMarket Featured Video"
+                          />
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  
+                  <Grid item xs={12} md={6}>
+                    <Typography variant="h4" component="h3" gutterBottom sx={{ color: 'primary.main' }}>
+                      Discover TechMarket
+                    </Typography>
+                    <Typography variant="body1" paragraph>
+                      Watch our featured video to see how TechMarket connects tech professionals with opportunities. Learn how our platform enables networking, skill showcasing, and career advancement in the tech industry.
+                    </Typography>
+                    <Typography variant="body1" paragraph>
+                      Our community members share their success stories and demonstrate how TechMarket has transformed their professional journey.
+                    </Typography>
+                    <Button 
+                      variant="contained" 
+                      color="primary"
+                      size="large"
+                      onClick={handleGetStarted}
+                      sx={{ mt: 2 }}
+                    >
+                      Join Our Community
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Container>
             </Box>
 
             <Box sx={{ py: { xs: 8, md: 12 } }}>
